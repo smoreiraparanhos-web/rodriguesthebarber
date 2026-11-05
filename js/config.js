@@ -9,6 +9,6 @@
 // NUNCA coloque aqui a "secret" ou "service_role" key.
 
 export const SUPABASE = {
-  url: '',
-  chave: '',
+  url: 'https://ximxfdicxakxgmlswqly.supabase.co',
+  chave: 'sb_publishable_5qky6uyWrBzEvOMpNF8fag_1FFx17ca',
 };
