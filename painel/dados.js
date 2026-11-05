@@ -18,14 +18,24 @@ export function criarDados({ url, chave }) {
   const sb = window.supabase.createClient(url, chave, {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' },
   });
+  let ultimoErro = '';
 
   return {
     demo: false,
 
     async sessao() {
-      const { data } = await sb.auth.getSession();
+      const { data, error } = await sb.auth.getSession();
+      if (error) ultimoErro = error.message;
+      if (!data.session && /[?&]code=/.test(location.search)) {
+        // a biblioteca não trocou o código sozinha: tenta trocar aqui e guarda o motivo se falhar
+        const codigo = new URLSearchParams(location.search).get('code');
+        const r = await sb.auth.exchangeCodeForSession(codigo);
+        if (r.error) ultimoErro = r.error.message;
+        return r.data?.session || null;
+      }
       return data.session;
     },
+    ultimoErro: () => ultimoErro,
     async papel() {
       return ok(await sb.rpc('meu_papel'));
     },
