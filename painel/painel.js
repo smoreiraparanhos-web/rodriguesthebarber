@@ -7,6 +7,13 @@ import { hojeSP, agoraMinSP, somarDias, semanaDe, fmt, paraMin, paraHora } from 
 
 const parametros = new URLSearchParams(location.search);
 const DEMO = parametros.has('demo') || !SUPABASE.url || !SUPABASE.chave;
+// guarda o erro que o login pode devolver no endereço, antes da biblioteca limpar o endereço
+const erroLogin = (() => {
+  const p = new URLSearchParams(location.search + '&' + location.hash.replace(/^#/, ''));
+  const erro = p.get('error_description') || p.get('error');
+  return erro ? { erro: erro.replace(/\+/g, ' '), codigo: p.get('error_code') || p.get('error') || '' } : null;
+})();
+const voltouDoLogin = /[?&#](code|access_token|error)=/.test(location.href);
 const dados = DEMO ? criarDemo() : criarDados(SUPABASE);
 
 const ATIVOS = ['pendente', 'confirmado', 'chegou'];
@@ -74,7 +81,12 @@ async function iniciar() {
   document.getElementById('faixa-demo').hidden = !DEMO;
   try {
     const sessao = await dados.sessao();
-    if (!sessao) return telaLogin();
+    if (!sessao) {
+      telaLogin();
+      if (erroLogin) mostrarErroLogin(erroLogin.erro, erroLogin.codigo);
+      else if (voltouDoLogin) mostrarErroLogin(dados.ultimoErro?.() || 'O Google respondeu, mas a sessão não foi criada.', 'sem_sessao');
+      return;
+    }
     eu = await dados.papel();
     if (!eu) return telaNegado(sessao.user?.email);
     await recarregar();
@@ -102,6 +114,26 @@ function telaLogin() {
     const { error } = await dados.entrar();
     if (error) { toast('Não foi possível abrir o login do Google. Tente de novo.'); e.currentTarget.removeAttribute('aria-busy'); }
   };
+}
+
+// explica na tela por que o login não terminou (e limpa o endereço para não repetir)
+function mostrarErroLogin(mensagem, codigo) {
+  const traducao = [
+    [/exchange external code|invalid_client|unauthorized_client/i, 'O Supabase não conseguiu confirmar o login com o Google. Confira se o ID do cliente e a chave secreta colados no Supabase (Authentication > Sign In / Providers > Google) são os mesmos do cliente "Painel" no Google Cloud.'],
+    [/redirect|not allowed/i, 'O endereço de volta não está liberado. No Supabase, em Authentication > URL Configuration, o endereço do painel precisa estar em Redirect URLs.'],
+    [/code verifier|flow state|pkce/i, 'O login começou num endereço e terminou em outro. Abra o painel pelo endereço completo, termine o login na mesma aba e tente de novo.'],
+    [/signups? not allowed|signup is disabled/i, 'O cadastro de usuários novos está desligado no Supabase. Em Authentication > Sign In / Providers, deixe "Allow new users to sign up" ligado (quem entra no painel continua sendo só quem está na lista).'],
+    [/access_denied|cancel/i, 'O login foi cancelado na tela do Google. Tente de novo e escolha a conta.'],
+  ].find(([re]) => re.test(mensagem + ' ' + codigo));
+  const caixa = document.createElement('div');
+  caixa.className = 'bloco';
+  caixa.setAttribute('role', 'alert');
+  caixa.style.borderColor = 'var(--erro)';
+  caixa.innerHTML = `<b style="color:var(--erro)">O login não terminou</b>
+    <p>${esc(traducao ? traducao[1] : 'Tente de novo. Se continuar, mande um print desta mensagem para o suporte.')}</p>
+    <p class="nota">Detalhe técnico: ${esc(mensagem)}${codigo ? ` (${esc(codigo)})` : ''}</p>`;
+  document.querySelector('.login')?.appendChild(caixa);
+  history.replaceState(null, '', location.pathname);
 }
 
 function escolherContaDemo() {
