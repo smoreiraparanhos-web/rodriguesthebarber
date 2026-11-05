@@ -112,6 +112,15 @@ galeria.innerHTML = fotos.map(([nome, alt], i) => `
     </button>
   </li>`).join('');
 
+// no celular a galeria começa com 6 fotos; o botão mostra as outras
+const galeriaToda = $('#galeria-toda');
+galeriaToda.addEventListener('click', () => {
+  galeria.classList.remove('recolhida');
+  galeriaToda.setAttribute('aria-expanded', 'true');
+  galeriaToda.hidden = true;
+  galeria.querySelector('li:nth-child(7) button')?.focus({ preventScroll: true });
+});
+
 // borda impressa do filme e películas que correm em sentidos opostos ao rolar
 const trabalhos = $('#trabalhos');
 const peliculas = [...document.querySelectorAll('.pelicula')];
@@ -441,7 +450,7 @@ function mostrarAviso(tipo, titulo, texto, comWhatsApp = false) {
   aviso.hidden = false;
   aviso.className = `aviso ${tipo}`;
   aviso.innerHTML = `<h3>${esc(titulo)}</h3><p>${esc(texto)}</p>` +
-    (comWhatsApp ? `<p><a class="link-ouro" href="${mensagemWhatsApp()}" target="_blank" rel="noopener">Pedir o horário pelo WhatsApp</a></p>` : '');
+    (comWhatsApp ? `<p><a class="link-ouro" href="${mensagemWhatsApp()}" target="_blank" rel="noopener noreferrer">Pedir o horário pelo WhatsApp</a></p>` : '');
 }
 
 function atualizarResumo() {

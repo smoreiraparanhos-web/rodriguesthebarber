@@ -8,6 +8,8 @@ css/style.css            visual (cores, fontes, animações)
 js/main.js               galeria, avaliações, relógio, placa, rosa dos ventos e agendamento
 js/agenda-simulada.js    agenda de mentira, usada só ao testar em localhost
 img/                     fotos otimizadas em WebP (cerca de 1,4 MB no total)
+_headers                 cabeçalhos de segurança (só valem no Netlify/Cloudflare Pages)
+docs/SEGURANCA.md        o que protege o site e uma lista de tarefas para você
 
 AGENDAMENTO
 O formulário usa a mesma agenda do site atual. O cliente escolhe o serviço,
@@ -40,6 +42,12 @@ são ajustados no painel, em Ajustes.
 AVALIAÇÕES
 As avaliações foram transcritas de prints reais do Google. Para trocar ou
 acrescentar, edite a lista "avaliacoes" no começo de js/main.js.
+
+SEGURANÇA
+O index.html tem uma proteção (Content-Security-Policy) que só deixa rodar
+os scripts do próprio site e só conversa com a agenda do Tiago e o mapa do
+Google. Se mudar o endereço da agenda ou o script pequeno do topo do
+index.html, atualize essa proteção. O passo a passo está em docs/SEGURANCA.md.
 
 HORÁRIO DE FUNCIONAMENTO
 A placa "Aberto/Fechado", a régua do dia e a faixa da abertura seguem
