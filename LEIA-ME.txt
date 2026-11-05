@@ -16,21 +16,21 @@ O formulário usa a mesma agenda do site atual. O cliente escolhe o serviço,
 o dia e um horário livre; o pedido chega como pendente no painel do Tiago.
 A agenda só aceita pedidos vindos do endereço já autorizado:
 https://smoreiraparanhos-web.github.io
-Qualquer repositório dessa conta funciona. Hoje o site está em barbearia-de-homem.
+Qualquer repositório dessa conta funciona. Hoje o site está em rodriguesthebarber.
 
 Ao abrir o site em localhost, ele usa a agenda simulada automaticamente:
 nenhum pedido de teste chega ao painel.
 
 COMO PUBLICAR NO GITHUB (pelo navegador)
 1. Faça uma cópia de segurança: no repositório, clique em Code > Download ZIP.
-2. Abra https://github.com/smoreiraparanhos-web/barbearia-de-homem
+2. Abra https://github.com/smoreiraparanhos-web/rodriguesthebarber
 3. Apague os arquivos antigos do site (index.html, css/, fotos/).
    Se existirem, NÃO apague os arquivos CNAME e .nojekyll.
 4. Clique em Add file > Upload files e arraste o CONTEÚDO desta pasta
    (index.html, favicon.svg, apple-touch-icon.png e as pastas css, js, img).
    O index.html precisa ficar na raiz do repositório, não dentro de outra pasta.
 5. Escreva uma mensagem (ex.: "Site novo") e clique em Commit changes.
-6. Aguarde 1 a 2 minutos e abra https://smoreiraparanhos-web.github.io/barbearia-de-homem/
+6. Aguarde 1 a 2 minutos e abra https://smoreiraparanhos-web.github.io/rodriguesthebarber/
    Se ainda aparecer o site antigo, recarregue com Ctrl + F5.
 7. Faça um pedido de teste, confira no painel que ele chegou e recuse o pedido.
 
