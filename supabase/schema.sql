@@ -22,6 +22,7 @@ create table if not exists public.admins (
   papel text not null check (papel in ('dono', 'suporte')),
   criado_em timestamptz not null default now()
 );
+alter table public.admins enable row level security;
 
 -- ---------- ajustes gerais ----------
 create table if not exists public.config (
@@ -33,6 +34,7 @@ create table if not exists public.config (
   max_pendentes_por_telefone int not null default 3 check (max_pendentes_por_telefone between 1 and 20),
   atualizado_em timestamptz not null default now()
 );
+alter table public.config enable row level security;
 insert into public.config (id) values (1) on conflict do nothing;
 
 -- ---------- serviços e preços (o site lê daqui) ----------
@@ -50,6 +52,7 @@ create table if not exists public.servicos (
   ordem int not null default 0,
   atualizado_em timestamptz not null default now()
 );
+alter table public.servicos enable row level security;
 
 -- ---------- horário de funcionamento (0 = domingo) ----------
 create table if not exists public.horario (
@@ -59,6 +62,7 @@ create table if not exists public.horario (
   fecha time not null default '20:00',
   check (fecha > abre)
 );
+alter table public.horario enable row level security;
 insert into public.horario (dia_semana, aberto, abre, fecha) values
   (0, true, '09:00', '12:00'), (1, true, '09:00', '20:00'), (2, true, '09:00', '20:00'),
   (3, true, '09:00', '20:00'), (4, true, '09:00', '20:00'), (5, true, '09:00', '20:00'),
@@ -70,6 +74,7 @@ create table if not exists public.dias_fechados (
   dia date primary key,
   motivo text check (length(motivo) <= 80)
 );
+alter table public.dias_fechados enable row level security;
 
 create table if not exists public.bloqueios (
   id bigint generated always as identity primary key,
@@ -80,6 +85,7 @@ create table if not exists public.bloqueios (
   periodo tsrange generated always as (tsrange(dia + hora, dia + hora + make_interval(mins => duracao_min))) stored,
   criado_em timestamptz not null default now()
 );
+alter table public.bloqueios enable row level security;
 create index if not exists bloqueios_dia on public.bloqueios (dia);
 
 -- ---------- agendamentos ----------
@@ -104,6 +110,7 @@ create table if not exists public.agendamentos (
   constraint sem_conflito exclude using gist (periodo with &&)
     where (status in ('pendente', 'confirmado', 'chegou'))
 );
+alter table public.agendamentos enable row level security;
 create index if not exists agendamentos_dia on public.agendamentos (dia);
 create index if not exists agendamentos_telefone on public.agendamentos (telefone);
 
@@ -114,6 +121,7 @@ create table if not exists public.historico (
   quem text not null default lower(coalesce(auth.jwt() ->> 'email', 'sistema')),
   texto text not null check (length(texto) between 1 and 300)
 );
+alter table public.historico enable row level security;
 create index if not exists historico_quando on public.historico (quando desc);
 
 -- ---------- data de atualização automática ----------
@@ -157,7 +165,6 @@ do $$
 declare t text;
 begin
   foreach t in array array['admins', 'config', 'servicos', 'horario', 'dias_fechados', 'bloqueios', 'agendamentos', 'historico'] loop
-    execute format('alter table public.%I enable row level security', t);
     execute format('revoke all on public.%I from anon', t);
     execute format('drop policy if exists admin_le on public.%I', t);
     execute format('drop policy if exists admin_muda on public.%I', t);
