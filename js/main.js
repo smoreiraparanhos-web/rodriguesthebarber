@@ -1,5 +1,7 @@
 // Rodrigues TheBarber: abertura, galeria, avaliações e agendamento.
 
+import { SUPABASE } from './config.js';
+
 const API = 'https://rodrigues-painel-tiago.adeptcharm4.chatgpt.site/api/public';
 const WHATSAPP = '5551994659011';
 const FUSO = 'America/Sao_Paulo';
@@ -242,11 +244,39 @@ function agoraSP() {
 const placa = $('#placa');
 const barraDia = $('.dia-barra');
 
+// horário de cada dia da semana (0 = domingo), em minutos; o banco do painel pode substituir
+let semanaHoras = [0, 1, 2, 3, 4, 5, 6].map((d) => ({ aberto: true, abre: 9 * 60, fecha: d === 0 ? 12 * 60 : 20 * 60 }));
+let diasFechados = [];
+const hh = (min) => `${Math.floor(min / 60)}h${min % 60 ? String(min % 60).padStart(2, '0') : ''}`;
+const DIAS_NOME = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+
+function hojeSPIso() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: FUSO, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+}
+function horasDoDia(semana, deslocamento = 0) {
+  const d = new Date(hojeSPIso() + 'T12:00:00Z');
+  d.setUTCDate(d.getUTCDate() + deslocamento);
+  const h = semanaHoras[semana];
+  return (!h || !h.aberto || diasFechados.includes(d.toISOString().slice(0, 10))) ? null : h;
+}
+// próxima abertura a partir de amanhã, em texto ("amanhã às 9h", "segunda às 9h")
+function proximaAbertura(semana) {
+  for (let n = 1; n <= 7; n++) {
+    const w = (semana + n) % 7;
+    const h = horasDoDia(w, n);
+    if (h) return `${n === 1 ? 'amanhã' : DIAS_NOME[w]} às ${hh(h.abre)}`;
+  }
+  return 'em breve';
+}
+
 function statusAberto() {
   const { semana, minuto } = agoraSP();
-  const abre = 9 * 60;
-  const fecha = semana === 0 ? 12 * 60 : 20 * 60;
-  const aberto = minuto >= abre && minuto < fecha;
+  const hoje = horasDoDia(semana);
+  const abre = hoje ? hoje.abre : 0;
+  const fecha = hoje ? hoje.fecha : 0;
+  const aberto = !!hoje && minuto >= abre && minuto < fecha;
+  const antesDeAbrir = !!hoje && minuto < abre;
+  const proxima = antesDeAbrir ? `hoje às ${hh(abre)}` : proximaAbertura(semana);
   const el = $('#aberto');
 
   if (aberto) {
@@ -255,25 +285,47 @@ function statusAberto() {
     const m = falta % 60;
     el.textContent = `Fecha em ${h ? `${h}h ` : ''}${m ? `${m}min` : ''}`.trim();
   } else {
-    el.textContent = minuto < abre ? 'Abre hoje às 9h' : 'Abre amanhã às 9h';
+    el.textContent = `Abre ${proxima}`;
   }
   el.classList.toggle('fechado', !aberto);
   const faixa = $('#faixa-status');
-  faixa.textContent = aberto ? `Aberto agora, até as ${fecha / 60}h` : (minuto < abre ? 'Fechado, abre às 9h' : 'Fechado, abre amanhã às 9h');
+  faixa.textContent = aberto ? `Aberto agora, até as ${hh(fecha)}` : `Fechado, abre ${proxima}`;
   faixa.classList.toggle('aberto-agora', aberto);
   placa.classList.toggle('aberta', aberto);
   $('#placa-txt').textContent = aberto ? 'Aberto' : 'Fechado';
-  $('#placa-sub').textContent = aberto ? `até as ${fecha / 60}h` : 'abre às 9h';
+  $('#placa-sub').textContent = aberto ? `até as ${hh(fecha)}` : `abre ${proxima.replace(/^(hoje|amanhã) às /, 'às ')}`;
 
-  const p = Math.min(1, Math.max(0, (minuto - abre) / (fecha - abre)));
+  const p = hoje ? Math.min(1, Math.max(0, (minuto - abre) / (fecha - abre))) : 0;
   barraDia.style.setProperty('--p', p.toFixed(4));
   barraDia.classList.toggle('fechada', !aberto);
-  const marcas = semana === 0 ? [9, 10, 11, 12] : [9, 12, 16, 20];
-  $('#dia-marcas').innerHTML = marcas.map((x) => `<span>${x}h</span>`).join('');
+  const base = hoje || semanaHoras.find((x) => x.aberto) || { abre: 540, fecha: 1200 };
+  const passos = [0, 1 / 3, 2 / 3, 1].map((f) => Math.round((base.abre + (base.fecha - base.abre) * f) / 60) * 60);
+  $('#dia-marcas').innerHTML = [...new Set(passos)].map((x) => `<span>${hh(x)}</span>`).join('');
 
   for (const tr of document.querySelectorAll('.horas tr[data-semana]')) {
-    tr.classList.toggle('hoje', tr.dataset.semana === '0' ? semana === 0 : semana > 0);
+    tr.classList.toggle('hoje', tr.dataset.semana.split(',').includes(String(semana)));
   }
+}
+
+// reescreve a tabela de horário e o rodapé com o horário do banco
+function mostrarHorario() {
+  const grupos = [];
+  for (const w of [1, 2, 3, 4, 5, 6, 0]) {
+    const h = semanaHoras[w];
+    const chave = h.aberto ? `${h.abre}-${h.fecha}` : 'fechado';
+    const ultimo = grupos[grupos.length - 1];
+    if (ultimo && ultimo.chave === chave) ultimo.dias.push(w);
+    else grupos.push({ chave, dias: [w], h });
+  }
+  const nomeGrupo = (dias) => {
+    const nome = (w) => DIAS_NOME[w][0].toUpperCase() + DIAS_NOME[w].slice(1);
+    return dias.length === 1 ? nome(dias[0]) : `${nome(dias[0])} a ${DIAS_NOME[dias[dias.length - 1]]}`;
+  };
+  const texto = (g) => (g.h.aberto ? `${hh(g.h.abre)} às ${hh(g.h.fecha)}` : 'Fechado');
+  $('.horas tbody').innerHTML = grupos.map((g) =>
+    `<tr data-semana="${g.dias.join(',')}"><th scope="row">${esc(nomeGrupo(g.dias))}</th><td>${esc(texto(g))}</td></tr>`).join('');
+  const rodape = document.getElementById('rodape-horario');
+  if (rodape) rodape.innerHTML = grupos.map((g) => `${esc(nomeGrupo(g.dias))}, ${esc(texto(g).toLowerCase())}`).join('<br>');
 }
 statusAberto();
 setInterval(statusAberto, 30000);
@@ -444,6 +496,65 @@ let chamarApi = async (caminho, corpo) => {
     clearTimeout(limite);
   }
 };
+
+// banco do painel (Supabase): mesmas respostas da agenda antiga, pelas funções públicas do banco
+async function chamarSupabase(caminho, corpo) {
+  const url = new URL(caminho, 'https://site.local');
+  let funcao, args;
+  if (url.pathname === '/services') { funcao = 'servicos_publicos'; args = {}; }
+  else if (url.pathname === '/availability') {
+    funcao = 'disponibilidade';
+    args = { p_dia: url.searchParams.get('day'), p_servico: url.searchParams.get('service') };
+  } else if (url.pathname === '/appointments' && corpo) {
+    funcao = 'solicitar_agendamento';
+    args = {
+      p_request_id: corpo.requestId, p_nome: corpo.name, p_telefone: corpo.phone, p_servico: corpo.service,
+      p_dia: corpo.day, p_hora: corpo.time, p_observacao: corpo.notes || '', p_website: corpo.website || '',
+    };
+  } else throw new Error('Não foi possível concluir.');
+
+  const controle = new AbortController();
+  const limite = setTimeout(() => controle.abort(), 20000);
+  const cabecalhos = { apikey: SUPABASE.chave, 'Content-Type': 'application/json' };
+  // a chave antiga (anon) é um JWT e também vai no Authorization; a nova (sb_publishable_) não
+  if (SUPABASE.chave.startsWith('eyJ')) cabecalhos.Authorization = `Bearer ${SUPABASE.chave}`;
+  try {
+    const resp = await fetch(`${SUPABASE.url.replace(/\/$/, '')}/rest/v1/rpc/${funcao}`, {
+      method: 'POST', mode: 'cors', credentials: 'omit', cache: 'no-store',
+      headers: cabecalhos, body: JSON.stringify(args), signal: controle.signal,
+    });
+    let dados;
+    try { dados = await resp.json(); } catch { throw new Error('Não foi possível acessar a agenda.'); }
+    if (!resp.ok) throw new Error(dados?.message || 'Não foi possível concluir.');
+    return dados;
+  } finally {
+    clearTimeout(limite);
+  }
+}
+
+// preços vindos do painel: reescreve a "Tabela da casa" mantendo o visual e os ícones
+const reais = (v) => `R$ ${Number(v).toLocaleString('pt-BR', { minimumFractionDigits: Number(v) % 1 ? 2 : 0, maximumFractionDigits: 2 })}`;
+function mostrarPrecos(catalogo) {
+  if (!Array.isArray(catalogo) || !catalogo.length) return;
+  const grupos = [...document.querySelectorAll('.quadro-grupo')];
+  for (const g of grupos) {
+    const categoria = g.querySelector('h3').textContent.trim();
+    const itens = catalogo.filter((s) => s.categoria === categoria);
+    g.hidden = !itens.length;
+    g.querySelector('dl').innerHTML = itens.map((s) => `
+      <div${s.destaque ? ' class="favorito"' : ''}><dt>${esc(s.nome)}${s.detalhe ? ` <small>${esc(s.detalhe)}</small>` : ''}</dt>${
+        s.preco == null ? '<dd class="combinar">a combinar</dd>' : `<dd>${reais(s.preco)}</dd>`}</div>`).join('');
+  }
+  const ritual = document.querySelector('.ritual');
+  const combo = catalogo.find((s) => s.categoria === 'Combo');
+  ritual.hidden = !combo;
+  if (combo) {
+    ritual.querySelector('h3').textContent = combo.nome;
+    ritual.querySelector('div p').textContent = combo.detalhe || '';
+    ritual.querySelector('.ritual-preco').innerHTML = combo.preco == null
+      ? 'a combinar' : `<span>R$</span>${esc(reais(combo.preco).replace('R$ ', ''))}`;
+  }
+}
 
 function mensagemWhatsApp() {
   const partes = ['Olá, Tiago! Quero agendar um horário.'];
@@ -689,10 +800,13 @@ ficha.addEventListener('submit', async (e) => {
 });
 
 async function iniciarAgenda() {
-  if (LOCAL) {
+  const usarBanco = SUPABASE.url && SUPABASE.chave;
+  if (LOCAL && !new URLSearchParams(location.search).has('banco')) {
     // No computador de quem desenvolve, usa uma agenda simulada:
-    // nenhum pedido de teste chega ao painel do Tiago.
+    // nenhum pedido de teste chega ao painel do Tiago. (Para testar o banco de verdade, abra com ?banco)
     chamarApi = (await import('./agenda-simulada.js')).chamarApi;
+  } else if (usarBanco) {
+    chamarApi = chamarSupabase;
   }
   desenharDias();
   try {
@@ -700,6 +814,14 @@ async function iniciarAgenda() {
     estado.servicos = dados.services;
     estado.ativo = dados.enabled;
     estado.antecedencia = dados.advanceDays || 60;
+    if (dados.catalogo) mostrarPrecos(dados.catalogo);
+    if (Array.isArray(dados.horario) && dados.horario.length === 7) {
+      const min = (h) => Number(h.slice(0, 2)) * 60 + Number(h.slice(3, 5));
+      semanaHoras = dados.horario.map((h) => ({ aberto: h.aberto, abre: min(h.abre), fecha: min(h.fecha) }));
+      diasFechados = dados.fechados || [];
+      mostrarHorario();
+      statusAberto();
+    }
     desenharDias();
     servico.innerHTML = '<option value="">Escolha o serviço</option>' +
       Object.entries(dados.services).map(([nome, min]) => `<option value="${esc(nome)}">${esc(nome)} · ${min} min</option>`).join('');

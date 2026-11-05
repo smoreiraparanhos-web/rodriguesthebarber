@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <!-- Proteção do site: o navegador só roda os scripts daqui, só conversa com a agenda do Tiago
        e só abre o mapa do Google. Ao mudar o script pequeno do <head>, atualize o sha256 (veja docs/SEGURANCA.md). -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://rodrigues-painel-tiago.adeptcharm4.chatgpt.site; frame-src https://www.google.com https://maps.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://rodrigues-painel-tiago.adeptcharm4.chatgpt.site https://*.supabase.co; frame-src https://www.google.com https://maps.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rodrigues TheBarber | Barbearia em Eldorado do Sul</title>
@@ -402,7 +402,7 @@
         <table class="horas">
           <caption class="sr">Horário de atendimento</caption>
           <tbody>
-            <tr data-semana="1-6"><th scope="row">Segunda a sábado</th><td>9h às 20h</td></tr>
+            <tr data-semana="1,2,3,4,5,6"><th scope="row">Segunda a sábado</th><td>9h às 20h</td></tr>
             <tr data-semana="0"><th scope="row">Domingo</th><td>9h às 12h</td></tr>
           </tbody>
         </table>
@@ -434,7 +434,7 @@
       </div>
       <div class="rodape-col">
         <h2>Horário</h2>
-        <p>Segunda a sábado, 9h às 20h<br>Domingo, 9h às 12h</p>
+        <p id="rodape-horario">Segunda a sábado, 9h às 20h<br>Domingo, 9h às 12h</p>
       </div>
     </div>
     <div class="rodape-base">

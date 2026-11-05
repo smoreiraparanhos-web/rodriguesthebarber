@@ -24,7 +24,13 @@ Um site assim não pega vírus sozinho. Os riscos reais são:
   - campo-isca escondido para pegar robôs;
   - limite de tamanho no nome, no WhatsApp e na observação;
   - cada pedido tem um número único, então reenviar não duplica o pedido.
-- **A agenda só aceita pedidos de `https://smoreiraparanhos-web.github.io`.**
+- **A agenda antiga só aceita pedidos de `https://smoreiraparanhos-web.github.io`.**
+- **Painel novo (Supabase):**
+  - o banco só deixa os e-mails da tabela `admins` ler e mudar os dados, mesmo que alguém descubra o endereço do painel;
+  - o site só usa três funções que conferem tudo no servidor: dia, horário livre, telefone válido, no máximo 3 pedidos aguardando por telefone e limite de pedidos por minuto;
+  - dois clientes nunca ficam com o mesmo horário, nem pedindo no mesmo segundo;
+  - o histórico guarda quem fez cada mudança e ninguém consegue apagar ou falsificar o autor;
+  - a lista de quem entra só muda dentro do Supabase. Passo a passo em `docs/PAINEL.md`.
 - **Arquivo `_headers`:** obriga HTTPS, impede que o site seja aberto dentro de outro site e
   bloqueia câmera, microfone e localização. Só funciona no Netlify ou no Cloudflare Pages.
   No GitHub Pages ele é ignorado, mas a proteção do `index.html` continua valendo.
@@ -39,8 +45,10 @@ Um site assim não pega vírus sozinho. Os riscos reais são:
   printf '%s' "document.documentElement.classList.add('js')" | openssl dgst -sha256 -binary | base64
   ```
 
-- Se a agenda mudar de endereço, troque o endereço em `js/main.js` (`API`) **e** no
+- Se a agenda antiga mudar de endereço, troque o endereço em `js/main.js` (`API`) **e** no
   `connect-src` da linha `Content-Security-Policy`. Senão a agenda não carrega.
+  O banco novo (`*.supabase.co`) já está liberado.
+- Em `js/config.js` vai só a chave **pública** do Supabase. Nunca a `secret` nem a `service_role`.
 - Se colocar um serviço novo (outro mapa, um vídeo, um chat), acrescente o endereço dele na
   linha `Content-Security-Policy`.
 
@@ -48,7 +56,7 @@ Um site assim não pega vírus sozinho. Os riscos reais são:
 
 O mais importante depende das contas, não do código:
 
-- [ ] Ative a verificação em duas etapas no GitHub, no e-mail e no painel da agenda.
+- [ ] Ative a verificação em duas etapas no GitHub, no Supabase e nas contas Google do Tiago e do suporte.
 - [ ] Use senhas longas e diferentes em cada conta, guardadas num gerenciador de senhas.
 - [ ] No GitHub, em Settings > Pages, deixe marcado **Enforce HTTPS**.
 - [ ] Dê permissão para mexer no repositório a poucas pessoas.
