@@ -56,6 +56,13 @@ document.querySelectorAll('main section').forEach((s) => espiao.observe(s));
 
 $('#ano').textContent = new Date().getFullYear();
 
+// o link "Privacidade" do rodapé abre o aviso que fica junto ao formulário
+const privacidade = $('#privacidade');
+const abrirPrivacidade = () => { if (location.hash === '#privacidade') privacidade.open = true; };
+$('#link-privacidade').addEventListener('click', () => { privacidade.open = true; });
+addEventListener('hashchange', abrirPrivacidade);
+abrirPrivacidade();
+
 /* ---------- cartão de horário ---------- */
 
 // o exemplo do cartão aponta para o próximo sábado de verdade

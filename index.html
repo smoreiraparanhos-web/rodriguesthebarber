@@ -316,6 +316,19 @@
         <div class="ficha-resumo" id="resumo" aria-live="polite"></div>
         <button class="botao botao-ouro botao-enviar" type="submit" id="enviar" disabled>Solicitar horário</button>
         <div class="aviso" id="aviso" role="status" tabindex="-1" hidden></div>
+
+        <!-- aviso de privacidade (LGPD): para que servem os dados pedidos no formulário -->
+        <details class="privacidade" id="privacidade">
+          <summary>Ao solicitar, você concorda com o uso dos seus dados para o agendamento. <span>Como seus dados são usados</span></summary>
+          <div class="privacidade-texto">
+            <p><strong>Quem recebe:</strong> Tiago Gouvea Rodrigues, da Rodrigues TheBarber.</p>
+            <p><strong>O que é coletado:</strong> nome, WhatsApp, serviço, dia, horário e a observação, se você escrever uma.</p>
+            <p><strong>Para quê:</strong> registrar o seu pedido na agenda do Tiago e confirmar, remarcar ou cancelar o horário pelo WhatsApp. Seus dados não são vendidos nem usados para propaganda.</p>
+            <p><strong>Onde ficam:</strong> no sistema de agenda da barbearia, que só o Tiago acessa.</p>
+            <p><strong>Seus direitos:</strong> você pode pedir para ver, corrigir ou apagar seus dados a qualquer momento pelo WhatsApp <a class="link-ouro" href="https://wa.me/5551994659011" target="_blank" rel="noopener noreferrer">(51) 99465-9011</a>.</p>
+            <p>Este site não usa cookies nem ferramentas de rastreamento. O mapa da seção "Onde fica" é do Google e segue a política de privacidade do Google.</p>
+          </div>
+        </details>
       </form>
     </section>
 
@@ -426,6 +439,7 @@
     </div>
     <div class="rodape-base">
       <p>© <span id="ano">2026</span> Rodrigues TheBarber</p>
+      <a href="#privacidade" class="topo-link" id="link-privacidade">Privacidade</a>
       <a href="#inicio" class="topo-link">Voltar ao topo</a>
     </div>
   </footer>
