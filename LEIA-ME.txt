@@ -7,42 +7,64 @@ apple-touch-icon.png     ícone quando o site é salvo na tela inicial do celula
 css/style.css            visual (cores, fontes, animações)
 js/main.js               galeria, avaliações, relógio, placa, rosa dos ventos e agendamento
 js/agenda-simulada.js    agenda de mentira, usada só ao testar em localhost
+js/config.js             endereço e chave pública do banco do painel (Supabase)
+painel/                  painel privado do Tiago (agenda, pedidos, preços, horário)
+supabase/schema.sql      banco de dados do painel, com as regras de segurança
+docs/PAINEL.md           passo a passo para colocar o painel no ar
 img/                     fotos otimizadas em WebP (cerca de 1,4 MB no total)
+_headers                 cabeçalhos de segurança (só valem no Netlify/Cloudflare Pages)
+docs/SEGURANCA.md        o que protege o site e uma lista de tarefas para você
 
 AGENDAMENTO
 O formulário usa a mesma agenda do site atual. O cliente escolhe o serviço,
 o dia e um horário livre; o pedido chega como pendente no painel do Tiago.
 A agenda só aceita pedidos vindos do endereço já autorizado:
 https://smoreiraparanhos-web.github.io
-Qualquer repositório dessa conta funciona. Hoje o site está em barbearia-de-homem.
+Qualquer repositório dessa conta funciona. Hoje o site está em rodriguesthebarber.
 
 Ao abrir o site em localhost, ele usa a agenda simulada automaticamente:
 nenhum pedido de teste chega ao painel.
 
 COMO PUBLICAR NO GITHUB (pelo navegador)
 1. Faça uma cópia de segurança: no repositório, clique em Code > Download ZIP.
-2. Abra https://github.com/smoreiraparanhos-web/barbearia-de-homem
+2. Abra https://github.com/smoreiraparanhos-web/rodriguesthebarber
 3. Apague os arquivos antigos do site (index.html, css/, fotos/).
    Se existirem, NÃO apague os arquivos CNAME e .nojekyll.
 4. Clique em Add file > Upload files e arraste o CONTEÚDO desta pasta
-   (index.html, favicon.svg, apple-touch-icon.png e as pastas css, js, img).
+   (index.html, favicon.svg, apple-touch-icon.png, _headers e as pastas
+   css, js, img, painel, supabase e docs).
    O index.html precisa ficar na raiz do repositório, não dentro de outra pasta.
 5. Escreva uma mensagem (ex.: "Site novo") e clique em Commit changes.
-6. Aguarde 1 a 2 minutos e abra https://smoreiraparanhos-web.github.io/barbearia-de-homem/
+6. Aguarde 1 a 2 minutos e abra https://smoreiraparanhos-web.github.io/rodriguesthebarber/
    Se ainda aparecer o site antigo, recarregue com Ctrl + F5.
 7. Faça um pedido de teste, confira no painel que ele chegou e recuse o pedido.
 
+PAINEL DO TIAGO
+Endereço: https://smoreiraparanhos-web.github.io/rodriguesthebarber/painel/
+Só entram as contas Google cadastradas (Tiago e suporte). Enquanto
+js/config.js estiver vazio, o painel abre em modo demonstração e o site
+continua usando a agenda antiga. Para ligar o painel de verdade, siga
+docs/PAINEL.md.
+
 PREÇOS E SERVIÇOS
-A tabela de preços está escrita no index.html, na seção "Tabela da casa".
-A lista de serviços do formulário vem da agenda. Os nomes e as durações
-são ajustados no painel, em Ajustes.
+Com o painel ligado, os preços, os serviços e o horário são mudados no
+painel, em Ajustes, e o site mostra os novos valores na hora.
+Sem o painel ligado, vale o que está escrito no index.html, na seção
+"Tabela da casa".
 
 AVALIAÇÕES
 As avaliações foram transcritas de prints reais do Google. Para trocar ou
 acrescentar, edite a lista "avaliacoes" no começo de js/main.js.
 
+SEGURANÇA
+O index.html tem uma proteção (Content-Security-Policy) que só deixa rodar
+os scripts do próprio site e só conversa com a agenda do Tiago e o mapa do
+Google. Se mudar o endereço da agenda ou o script pequeno do topo do
+index.html, atualize essa proteção. O passo a passo está em docs/SEGURANCA.md.
+
 HORÁRIO DE FUNCIONAMENTO
-A placa "Aberto/Fechado", a régua do dia e a faixa da abertura seguem
-segunda a sábado 9h–20h e domingo 9h–12h (horário de Brasília). Feriados
-não são considerados. Para mudar o horário, edite a função statusAberto
-em js/main.js e o texto da tabela no index.html.
+A placa "Aberto/Fechado", a régua do dia, a faixa da abertura, a tabela
+de horário e o rodapé seguem o horário salvo no painel (horário de
+Brasília), incluindo os dias que o Tiago fechar por folga ou feriado.
+Sem o painel ligado, valem segunda a sábado 9h–20h e domingo 9h–12h,
+definidos em semanaHoras, no js/main.js.

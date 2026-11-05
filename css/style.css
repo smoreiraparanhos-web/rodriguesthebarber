@@ -1570,6 +1570,29 @@ section.trabalhos { overflow-x: visible; }
 .botao-enviar:disabled { opacity: .45; cursor: not-allowed; }
 .botao-enviar:disabled:active { transform: none; }
 
+/* aviso de privacidade, discreto embaixo do botão */
+.privacidade { margin-top: 1rem; font-size: .85rem; color: var(--cinza); }
+.privacidade summary { cursor: pointer; list-style: none; line-height: 1.5; }
+.privacidade summary::-webkit-details-marker { display: none; }
+.privacidade summary span {
+  color: var(--ouro-claro);
+  text-decoration: underline;
+  text-decoration-color: rgba(236, 208, 138, .45);
+  text-underline-offset: .2em;
+  white-space: nowrap;
+}
+.privacidade summary span::after { content: " ▾"; text-decoration: none; display: inline-block; }
+.privacidade[open] summary span::after { content: " ▴"; }
+.privacidade-texto {
+  display: grid;
+  gap: .5rem;
+  margin-top: .75rem;
+  padding-top: .75rem;
+  border-top: 1px dotted rgba(201, 162, 74, .45);
+  line-height: 1.55;
+}
+.privacidade-texto strong { color: var(--branco); font-weight: 600; }
+
 /* comprovante do pedido, como um ticket de barbearia */
 .aviso {
   padding: 1.25rem 1.25rem 1.25rem 1.5rem;
@@ -2337,6 +2360,67 @@ h2.titulo::after {
   font-size: .72rem;
   vertical-align: .15em;
 }
+
+/* ---------- acabamento no celular ---------- */
+
+/* textos sem palavra sozinha no fim e botões sempre numa linha só */
+h1, h2, h3, .hm-titulo, .nota-txt, .abertura-frase { text-wrap: balance; }
+.junto { display: inline-block; }
+p, li, dd, blockquote { text-wrap: pretty; }
+.botao { white-space: nowrap; }
+
+/* galeria: no celular mostra 6 fotos e um botão para ver o resto */
+.galeria-toda { display: none; }
+@media (max-width: 760px) {
+  .galeria.recolhida li:nth-child(n + 7) { display: none; }
+  .galeria-toda {
+    display: flex;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .galeria-toda[hidden] { display: none; }
+}
+
+@media (max-width: 640px) {
+  /* botões da abertura e do endereço dividem a largura em vez de quebrar desalinhados */
+  .abertura-acoes, .endereco-acoes { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .abertura-acoes .botao, .endereco-acoes .botao { padding-inline: .75rem; font-size: .95rem; }
+  .endereco-acoes { grid-template-columns: 1fr; }
+
+  /* números do Tiago lado a lado, os três na mesma linha */
+  .numeros { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .numeros dd { font-size: 2rem; }
+  .numeros dt { font-size: .82rem; }
+
+  /* avaliações: depoimento em destaque menor e cartões que deslizam para o lado */
+  .depo-destaque blockquote { margin: 0; }
+  .depo-destaque p { font-size: 1.15rem; }
+  .depos {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 84%;
+    gap: .85rem;
+    margin-inline: calc(-1 * var(--gutter));
+    padding: .25rem var(--gutter) 1rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .depos::-webkit-scrollbar { display: none; }
+  .depos li { scroll-snap-align: start; }
+  .depos-dica {
+    align-items: center;
+    gap: .5rem;
+    margin-top: -.25rem;
+    color: var(--cinza);
+    font-size: .85rem;
+  }
+  .depos-dica::after { content: "→"; color: var(--ouro); }
+}
+.depos-dica { display: none; }
+@media (max-width: 640px) { .depos-dica { display: flex; } }
 
 /* ---------- movimento reduzido ---------- */
 

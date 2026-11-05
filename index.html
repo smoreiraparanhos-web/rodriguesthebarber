@@ -2,6 +2,10 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
+  <!-- Proteção do site: o navegador só roda os scripts daqui, só conversa com a agenda do Tiago
+       e só abre o mapa do Google. Ao mudar o script pequeno do <head>, atualize o sha256 (veja docs/SEGURANCA.md). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://rodrigues-painel-tiago.adeptcharm4.chatgpt.site https://*.supabase.co; frame-src https://www.google.com https://maps.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rodrigues TheBarber | Barbearia em Eldorado do Sul</title>
   <meta name="description" content="Barbearia do Tiago Gouvea Rodrigues em Eldorado do Sul, RS. Degradê, barba, pigmentação, luzes e platinado com hora marcada. Agende pelo site.">
@@ -9,10 +13,10 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Rodrigues TheBarber">
   <meta property="og:description" content="Aqui o casual vira chique. Corte e barba com hora marcada em Eldorado do Sul.">
-  <meta property="og:url" content="https://smoreiraparanhos-web.github.io/barbearia-de-homem/">
-  <meta property="og:image" content="https://smoreiraparanhos-web.github.io/barbearia-de-homem/img/tiago-retrato-900.jpg">
+  <meta property="og:url" content="https://smoreiraparanhos-web.github.io/rodriguesthebarber/">
+  <meta property="og:image" content="https://smoreiraparanhos-web.github.io/rodriguesthebarber/img/tiago-retrato-900.jpg">
   <meta property="og:locale" content="pt_BR">
-  <link rel="canonical" href="https://smoreiraparanhos-web.github.io/barbearia-de-homem/">
+  <link rel="canonical" href="https://smoreiraparanhos-web.github.io/rodriguesthebarber/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,8 +30,8 @@
     "@context": "https://schema.org",
     "@type": "BarberShop",
     "name": "Rodrigues TheBarber",
-    "image": "https://smoreiraparanhos-web.github.io/barbearia-de-homem/img/tiago-retrato-900.jpg",
-    "url": "https://smoreiraparanhos-web.github.io/barbearia-de-homem/",
+    "image": "https://smoreiraparanhos-web.github.io/rodriguesthebarber/img/tiago-retrato-900.jpg",
+    "url": "https://smoreiraparanhos-web.github.io/rodriguesthebarber/",
     "telephone": "+55 51 99465-9011",
     "priceRange": "R$ 15 – R$ 180",
     "address": {
@@ -75,7 +79,7 @@
         <span class="fumaca fumaca-2"></span>
       </div>
       <div class="abertura-texto">
-        <p class="abertura-local">Eldorado do Sul &nbsp;✦&nbsp; mais de 20 anos na tesoura</p>
+        <p class="abertura-local">Eldorado do Sul &nbsp;✦&nbsp; <span class="junto">mais de 20 anos na tesoura</span></p>
         <h1 id="titulo" class="letreiro">
           <span class="letreiro-linha letreiro-1">Rodrigues</span>
           <span class="letreiro-linha letreiro-2">TheBarber</span>
@@ -213,8 +217,9 @@
         <h2 id="trab-titulo" class="titulo">Saiu da cadeira do Tiago</h2>
         <p>Fotos dos clientes logo depois do corte. Toque em uma foto para ampliar.</p>
       </div>
-      <ul class="galeria" id="galeria"></ul>
-      <p class="galeria-mais"><a class="link-ouro" href="https://instagram.com/rodriguesthebarber4239" target="_blank" rel="noopener">Veja mais cortes no Instagram @rodriguesthebarber4239</a></p>
+      <ul class="galeria recolhida" id="galeria"></ul>
+      <button type="button" class="botao botao-linha galeria-toda" id="galeria-toda" aria-controls="galeria" aria-expanded="false">Ver todas as 12 fotos</button>
+      <p class="galeria-mais"><a class="link-ouro" href="https://instagram.com/rodriguesthebarber4239" target="_blank" rel="noopener noreferrer">Veja mais cortes no Instagram @rodriguesthebarber4239</a></p>
     </section>
 
     <!-- Sobre o Tiago -->
@@ -258,7 +263,7 @@
         <h2 id="ag-titulo" class="titulo">Agendar horário</h2>
         <p>O horário fica reservado quando o Tiago confirma pelo WhatsApp.</p>
         <ul class="agendar-info">
-          <li>Remarcar ou cancelar: <a class="link-ouro" href="https://wa.me/5551994659011" target="_blank" rel="noopener">(51) 99465-9011</a></li>
+          <li>Remarcar ou cancelar: <a class="link-ouro" href="https://wa.me/5551994659011" target="_blank" rel="noopener noreferrer">(51) 99465-9011</a></li>
           <li>Pagamento no local: dinheiro, Pix ou cartão</li>
         </ul>
       </div>
@@ -296,7 +301,7 @@
         </div>
         <div class="linha">
           <label for="telefone">WhatsApp</label>
-          <input id="telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(51) 90000-0000" required aria-describedby="telefone-erro">
+          <input id="telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(51) 90000-0000" required maxlength="20" aria-describedby="telefone-erro">
         </div>
         <p class="erro" id="telefone-erro" hidden>Informe o WhatsApp com DDD, por exemplo (51) 99999-9999.</p>
         <div class="linha">
@@ -311,6 +316,19 @@
         <div class="ficha-resumo" id="resumo" aria-live="polite"></div>
         <button class="botao botao-ouro botao-enviar" type="submit" id="enviar" disabled>Solicitar horário</button>
         <div class="aviso" id="aviso" role="status" tabindex="-1" hidden></div>
+
+        <!-- aviso de privacidade (LGPD): para que servem os dados pedidos no formulário -->
+        <details class="privacidade" id="privacidade">
+          <summary>Ao solicitar, você concorda com o uso dos seus dados para o agendamento. <span>Como seus dados são usados</span></summary>
+          <div class="privacidade-texto">
+            <p><strong>Quem recebe:</strong> Tiago Gouvea Rodrigues, da Rodrigues TheBarber.</p>
+            <p><strong>O que é coletado:</strong> nome, WhatsApp, serviço, dia, horário e a observação, se você escrever uma.</p>
+            <p><strong>Para quê:</strong> registrar o seu pedido na agenda do Tiago e confirmar, remarcar ou cancelar o horário pelo WhatsApp. Seus dados não são vendidos nem usados para propaganda.</p>
+            <p><strong>Onde ficam:</strong> no sistema de agenda da barbearia, que só o Tiago acessa.</p>
+            <p><strong>Seus direitos:</strong> você pode pedir para ver, corrigir ou apagar seus dados a qualquer momento pelo WhatsApp <a class="link-ouro" href="https://wa.me/5551994659011" target="_blank" rel="noopener noreferrer">(51) 99465-9011</a>.</p>
+            <p>Este site não usa cookies nem ferramentas de rastreamento. O mapa da seção "Onde fica" é do Google e segue a política de privacidade do Google.</p>
+          </div>
+        </details>
       </form>
     </section>
 
@@ -320,7 +338,7 @@
         <p class="nota-num">5,0</p>
         <p class="nota-estrelas" role="img" aria-label="5 de 5 estrelas">★★★★★</p>
         <h2 id="av-titulo" class="nota-txt">Nota máxima em 73 avaliações no Google</h2>
-        <a class="link-ouro" href="https://www.google.com/maps/place/Barbearia+Rodrigues+The+Barber/@-29.9935595,-51.3147706,17z/data=!4m8!3m7!1s0x95197dc7478def27:0xad8aed1cdf2169ea!8m2!3d-29.9935595!4d-51.3147706!9m1!1b1" target="_blank" rel="noopener">Ler todas no Google</a>
+        <a class="link-ouro" href="https://www.google.com/maps/place/Barbearia+Rodrigues+The+Barber/@-29.9935595,-51.3147706,17z/data=!4m8!3m7!1s0x95197dc7478def27:0xad8aed1cdf2169ea!8m2!3d-29.9935595!4d-51.3147706!9m1!1b1" target="_blank" rel="noopener noreferrer">Ler todas no Google</a>
       </div>
       <figure class="depo-destaque">
         <blockquote>
@@ -328,7 +346,8 @@
         </blockquote>
         <figcaption>Emerson</figcaption>
       </figure>
-      <ul class="depos" id="depos"></ul>
+      <ul class="depos" id="depos" aria-label="Mais avaliações do Google"></ul>
+      <p class="depos-dica" aria-hidden="true">Arraste para o lado para ler mais</p>
     </section>
 
     <!-- Endereço, horários e mapa -->
@@ -383,17 +402,17 @@
         <table class="horas">
           <caption class="sr">Horário de atendimento</caption>
           <tbody>
-            <tr data-semana="1-6"><th scope="row">Segunda a sábado</th><td>9h às 20h</td></tr>
+            <tr data-semana="1,2,3,4,5,6"><th scope="row">Segunda a sábado</th><td>9h às 20h</td></tr>
             <tr data-semana="0"><th scope="row">Domingo</th><td>9h às 12h</td></tr>
           </tbody>
         </table>
         <div class="endereco-acoes">
-          <a class="botao botao-ouro" href="https://www.google.com/maps/dir/?api=1&amp;destination=Barbearia+Rodrigues+The+Barber,+Av.+Nestor+Jardim+Filho,+402,+Eldorado+do+Sul+-+RS" target="_blank" rel="noopener">Abrir rota no Google Maps</a>
-          <a class="botao botao-linha" href="https://wa.me/5551994659011" target="_blank" rel="noopener">Falar no WhatsApp</a>
+          <a class="botao botao-ouro" href="https://www.google.com/maps/dir/?api=1&amp;destination=Barbearia+Rodrigues+The+Barber,+Av.+Nestor+Jardim+Filho,+402,+Eldorado+do+Sul+-+RS" target="_blank" rel="noopener noreferrer">Abrir rota no Google Maps</a>
+          <a class="botao botao-linha" href="https://wa.me/5551994659011" target="_blank" rel="noopener noreferrer">Falar no WhatsApp</a>
         </div>
       </div>
       <div class="mapa">
-        <iframe title="Mapa da Rodrigues TheBarber" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Barbearia+Rodrigues+The+Barber,+Av.+Nestor+Jardim+Filho,+402,+Eldorado+do+Sul+-+RS&amp;z=16&amp;output=embed"></iframe>
+        <iframe title="Mapa da Rodrigues TheBarber" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="https://www.google.com/maps?q=Barbearia+Rodrigues+The+Barber,+Av.+Nestor+Jardim+Filho,+402,+Eldorado+do+Sul+-+RS&amp;z=16&amp;output=embed"></iframe>
       </div>
     </section>
   </main>
@@ -406,8 +425,8 @@
       </div>
       <div class="rodape-col">
         <h2>Contato</h2>
-        <a href="https://wa.me/5551994659011" target="_blank" rel="noopener">WhatsApp (51) 99465-9011</a>
-        <a href="https://instagram.com/rodriguesthebarber4239" target="_blank" rel="noopener">Instagram @rodriguesthebarber4239</a>
+        <a href="https://wa.me/5551994659011" target="_blank" rel="noopener noreferrer">WhatsApp (51) 99465-9011</a>
+        <a href="https://instagram.com/rodriguesthebarber4239" target="_blank" rel="noopener noreferrer">Instagram @rodriguesthebarber4239</a>
       </div>
       <div class="rodape-col">
         <h2>Endereço</h2>
@@ -415,11 +434,12 @@
       </div>
       <div class="rodape-col">
         <h2>Horário</h2>
-        <p>Segunda a sábado, 9h às 20h<br>Domingo, 9h às 12h</p>
+        <p id="rodape-horario">Segunda a sábado, 9h às 20h<br>Domingo, 9h às 12h</p>
       </div>
     </div>
     <div class="rodape-base">
       <p>© <span id="ano">2026</span> Rodrigues TheBarber</p>
+      <a href="#privacidade" class="topo-link" id="link-privacidade">Privacidade</a>
       <a href="#inicio" class="topo-link">Voltar ao topo</a>
     </div>
   </footer>
