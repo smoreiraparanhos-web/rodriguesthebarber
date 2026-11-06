@@ -558,7 +558,9 @@ function mostrarPrecos(catalogo) {
 
 // mensagem do pedido para o WhatsApp da barbearia, com negrito, itálico e uma informação por linha
 const horaFalada = (h) => h.replace(':00', 'h').replace(':', 'h');
-function textoPedido({ servicoNome, dia, hora, nome, obs, numero }) {
+// link que só a barbearia usa: abre o painel direto neste pedido (cliente vê "Acesso negado")
+const linkPainel = (numero) => new URL(`painel/#p${numero}`, location.href.replace(/[?#].*$/, '').replace(/[^/]*$/, '')).href;
+function textoPedido({ servicoNome, dia, hora, nome, obs, numero, confirmado }) {
   const item = estado.catalogo.find((s) => s.nome === servicoNome);
   const duracao = estado.servicos[servicoNome];
   const linhas = ['*RODRIGUES THEBARBER*', '_Pedido de agendamento pelo site_', ''];
@@ -571,7 +573,9 @@ function textoPedido({ servicoNome, dia, hora, nome, obs, numero }) {
   if (nome) linhas.push(`👤 *Cliente:* ${nome}`);
   if (obs) linhas.push(`📝 *Obs.:* ${obs}`);
   linhas.push('');
-  linhas.push(numero ? `Pedido nº ${String(numero).padStart(4, '0')} · aguardando confirmação` : 'Aguardando confirmação');
+  const situacao = confirmado ? 'horário reservado' : 'aguardando confirmação';
+  linhas.push(numero ? `Pedido nº ${String(numero).padStart(4, '0')} · ${situacao}` : situacao[0].toUpperCase() + situacao.slice(1));
+  if (numero) linhas.push(`🔒 Só para a barbearia: ${linkPainel(numero)}`);
   return linhas.join('\n');
 }
 const linkWhatsApp = (texto) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
@@ -591,15 +595,16 @@ function mostrarAviso(tipo, titulo, texto, comWhatsApp = false) {
 }
 
 // pedido registrado: último passo é enviar a mensagem pronta ao WhatsApp da barbearia
-function mostrarEnvioWhatsApp(pedido, numero) {
-  const texto = textoPedido({ servicoNome: pedido.service, dia: pedido.day, hora: pedido.time, nome: pedido.name, obs: pedido.notes.trim(), numero });
+function mostrarEnvioWhatsApp(pedido, numero, confirmado) {
+  const texto = textoPedido({ servicoNome: pedido.service, dia: pedido.day, hora: pedido.time, nome: pedido.name, obs: pedido.notes.trim(), numero, confirmado });
   aviso.hidden = false;
   aviso.className = 'aviso ok';
-  aviso.innerHTML = `<h3>Falta só um passo</h3>
-    <p>Envie o pedido no WhatsApp da barbearia para o Tiago receber agora:</p>
+  aviso.innerHTML = `<h3>${confirmado ? 'Horário reservado!' : 'Falta só um passo'}</h3>
+    <p>${confirmado ? 'Agora envie a mensagem no WhatsApp para avisar o Tiago:' : 'Envie o pedido no WhatsApp da barbearia para o Tiago receber agora:'}</p>
     <p><a class="botao botao-ouro botao-wpp" href="${esc(linkWhatsApp(texto))}" target="_blank" rel="noopener noreferrer">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg>Enviar no WhatsApp</a></p>
-    <p class="aviso-resumo">${esc(pedido.service)}, ${esc(diaPorExtenso(pedido.day))}, às ${esc(pedido.time)}. O horário fica reservado quando o Tiago confirmar.</p>`;
+    <p class="aviso-resumo">${esc(pedido.service)}, ${esc(diaPorExtenso(pedido.day))}, às ${esc(pedido.time)}. ${confirmado
+      ? 'Se precisar mudar algo, o Tiago te chama no WhatsApp.' : 'O horário fica reservado quando o Tiago confirmar.'}</p>`;
 }
 
 function atualizarResumo() {
@@ -805,7 +810,7 @@ ficha.addEventListener('submit', async (e) => {
   try {
     const resposta = await chamarApi('/appointments', pedido);
     if (!resposta.received) throw new Error('O envio não foi confirmado. Tente de novo.');
-    mostrarEnvioWhatsApp(pedido, Number.isInteger(resposta.id) ? resposta.id : null);
+    mostrarEnvioWhatsApp(pedido, Number.isInteger(resposta.id) ? resposta.id : null, resposta.status === 'confirmed');
     ficha.reset();
     pedidoId = novoId();
     estado.dia = '';

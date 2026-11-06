@@ -106,6 +106,23 @@ Essa chave é pública de propósito: quem protege os dados são as regras do ba
 5. No site, faça um pedido de teste. Ele aparece em **Pedidos** no painel. Recuse o pedido.
 6. No celular do Tiago, abra o painel e use **Compartilhar** > **Adicionar à tela de início**. Ele vira um "app".
 
+## Como os pedidos chegam (WhatsApp)
+
+1. O cliente agenda no site. O horário **já fica reservado** e some do site para os outros clientes.
+2. O site mostra "Horário reservado!" e o botão **Enviar no WhatsApp**. O WhatsApp do cliente abre com a mensagem formatada para a barbearia, e ele só toca em enviar.
+3. No fim da mensagem tem o link **"Só para a barbearia"**. Só abre no celular do Tiago ou do suporte, porque pede o login. Se o cliente tocar, vê "Acesso negado".
+4. Pelo link, o Tiago escolhe:
+   - **Mandar confirmação no WhatsApp:** abre a resposta pronta para o cliente.
+   - **Remarcar:** escolhe o novo horário, e a mensagem para o cliente já sai pronta.
+   - **Recusar e liberar o horário:** o horário volta a aparecer no site, e o aviso para o cliente já sai pronto.
+
+Se o Tiago não fizer nada, o horário continua reservado. Para voltar a confirmar pedido por pedido, desligue **"Confirmar sozinho os pedidos do site"** em Ajustes.
+
+## Quando o arquivo supabase/schema.sql mudar
+
+Abra **SQL Editor** > **New query**, cole o arquivo inteiro de novo e clique em **Run**. Ele não apaga dados.
+Faça isso **antes** de juntar o pull request que trouxe a mudança.
+
 ## Depois que estiver funcionando
 
 - **Avisos de pedido novo:** em Ajustes, toque em "Avisar neste aparelho quando chegar pedido". O aviso aparece enquanto o painel estiver aberto, mesmo em outra aba.

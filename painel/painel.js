@@ -14,6 +14,13 @@ const erroLogin = (() => {
   return erro ? { erro: erro.replace(/\+/g, ' '), codigo: p.get('error_code') || p.get('error') || '' } : null;
 })();
 const voltouDoLogin = /[?&#](code|access_token|error)=/.test(location.href);
+// link da mensagem do WhatsApp (…/painel/#p427): abre direto aquele pedido
+const pedidoDoLink = () => {
+  const m = location.hash.match(/^#p(\d+)$/);
+  if (m) { try { sessionStorage.setItem('pedidoDoLink', m[1]); } catch { /* sem armazenamento */ } return +m[1]; }
+  try { return +sessionStorage.getItem('pedidoDoLink') || null; } catch { return null; }
+};
+let pedidoInicial = pedidoDoLink();
 const dados = DEMO ? criarDemo() : criarDados(SUPABASE);
 
 const ATIVOS = ['pendente', 'confirmado', 'chegou'];
@@ -92,10 +99,23 @@ async function iniciar() {
     await recarregar();
     montarApp();
     ligarAoVivo();
+    abrirPedidoDoLink();
   } catch (e) {
     telaErro(e);
   }
 }
+
+function abrirPedidoDoLink() {
+  const id = pedidoInicial;
+  pedidoInicial = null;
+  try { sessionStorage.removeItem('pedidoDoLink'); } catch { /* sem armazenamento */ }
+  if (location.hash) history.replaceState(null, '', location.pathname);
+  if (!id) return;
+  const a = S.agendamentos.find((x) => x.id === id);
+  if (a) folhaCliente(a, true);
+  else toast(`Pedido nº ${String(id).padStart(4, '0')} não encontrado. Ele pode ser de um dia que já passou.`);
+}
+addEventListener('hashchange', () => { if (eu && S) { pedidoInicial = pedidoDoLink(); abrirPedidoDoLink(); } });
 
 function telaLogin() {
   raiz.innerHTML = `
@@ -356,14 +376,24 @@ function acao(qual, id, botao) {
 /* ---------- Pedidos ---------- */
 function desenharPedidos() {
   const pend = S.agendamentos.filter((a) => a.status === 'pendente').sort((a, b) => (a.dia + a.hora).localeCompare(b.dia + b.hora));
+  const hoje = hojeSP();
+  const recentes = S.agendamentos.filter((a) => a.origem === 'site' && a.status === 'confirmado' && a.dia >= hoje)
+    .sort((a, b) => b.criado - a.criado).slice(0, 15);
+  const auto = S.config.confirmacao_automatica !== false;
   document.getElementById('t-pedidos').innerHTML = `
     <div class="cabeca">
       <h1>Pedidos do site</h1>
-      <p>${pend.length ? `${pend.length} pedido${pend.length > 1 ? 's' : ''} esperando sua resposta. O horário só fica reservado para o cliente depois de confirmar.` : 'Tudo respondido.'}</p>
+      <p>${auto ? 'Os pedidos do site já entram confirmados. Toque num pedido para mandar a confirmação, remarcar ou recusar.'
+        : pend.length ? `${pend.length} pedido${pend.length > 1 ? 's' : ''} esperando sua resposta. O horário só fica reservado para o cliente depois de confirmar.` : 'Tudo respondido.'}</p>
     </div>
     ${S.config.recebendo ? '' : '<p class="vazio">Os pedidos pelo site estão pausados. Reative em Ajustes.</p>'}
-    <div class="lista">${pend.length ? pend.map(itemPedido).join('') : '<p class="vazio">Nenhum pedido novo. Quando chegar um, ele aparece aqui na hora.</p>'}</div>`;
+    ${pend.length ? `<p class="rotulo">Aguardando resposta</p><div class="lista">${pend.map(itemPedido).join('')}</div>` : auto ? '' : '<p class="vazio">Nenhum pedido novo. Quando chegar um, ele aparece aqui na hora.</p>'}
+    ${auto ? `<p class="rotulo">Últimos agendados pelo site</p>
+      <div class="lista">${recentes.length ? recentes.map((a) => `
+        <button class="slot marcado" data-ver="${a.id}"><span class="h">${a.hora}</span><span class="t"><b>${esc(a.nome)}</b><small>${esc(a.servico)} · ${diaExtenso(a.dia)} · nº ${String(a.id).padStart(4, '0')}</small></span>${chip(a.status)}</button>`).join('')
+        : '<p class="vazio">Nenhum agendamento pelo site ainda.</p>'}</div>` : ''}`;
   document.querySelectorAll('#t-pedidos [data-acao]').forEach((b) => b.onclick = () => acao(b.dataset.acao, +b.dataset.id, b));
+  document.querySelectorAll('#t-pedidos [data-ver]').forEach((b) => b.onclick = () => folhaCliente(S.agendamentos.find((a) => a.id === +b.dataset.ver), true));
 }
 function itemPedido(a) {
   const min = Math.max(1, Math.round((Date.now() - a.criado) / 60000));
@@ -402,7 +432,7 @@ function proximoLivre(a) {
 }
 
 function folhaRecusar(a) {
-  const motivos = [['ocupado', 'Já tenho cliente nesse horário'], ['fora', 'Não vou atender nesse dia'], ['outro', 'Outro motivo']];
+  const motivos = [['ocupado', 'Não consigo nesse horário'], ['fora', 'Não vou atender nesse dia'], ['outro', 'Outro motivo']];
   const sugestao = proximoLivre(a);
   abrirFolha(`
     <h2>Recusar o pedido de ${esc(primeiroNome(a.nome))}</h2>
@@ -418,7 +448,7 @@ function folhaRecusar(a) {
     f.querySelector('#ok').onclick = async (ev) => {
       const ok = await executar(ev.currentTarget, () => dados.atualizarAgendamento(a.id, { status: 'recusado' }), { log: `recusou o pedido de ${a.nome} (${diaExtenso(a.dia)} ${a.hora})` });
       if (!ok) return;
-      const txt = { ocupado: 'Esse horário já está ocupado.', fora: 'Não vou atender nesse dia.', outro: 'Não vou conseguir nesse horário.' }[motivo];
+      const txt = { ocupado: `Infelizmente não vou conseguir te atender ${diaExtenso(a.dia)} às ${horaFalada(a.hora)}.`, fora: `Infelizmente não vou atender ${diaExtenso(a.dia)}.`, outro: 'Infelizmente não vou conseguir nesse horário.' }[motivo];
       folhaMensagem('Pedido recusado', a, `Olá, ${primeiroNome(a.nome)}! ${txt}` +
         (sugestao ? ` Tenho horário ${diaExtenso(sugestao.dia)} às ${horaFalada(sugestao.hora)}. Quer que eu reserve para você?` : ' Me diga outro dia que te encaixo.'));
     };
@@ -531,20 +561,28 @@ function folhaBloqueio(b) {
   });
 }
 
-function folhaCliente(a) {
+function folhaCliente(a, doLink = false) {
   abrirFolha(`
+    ${doLink ? `<p class="rotulo">Pedido nº ${String(a.id).padStart(4, '0')}${a.origem === 'site' ? ' · pelo site' : ''}</p>` : ''}
     <h2>${esc(a.nome)}</h2>
     <p class="nota">${esc(a.servico)} · ${a.duracao_min} min · ${real(precoDe(a))}<br>${diaExtenso(a.dia)} às ${a.hora} · marcou pelo ${esc(a.origem)}${a.telefone ? `<br>WhatsApp ${esc(a.telefone)}` : ''}${a.observacao ? `<br>"${esc(a.observacao)}"` : ''}</p>
     ${chip(a.status)}
     <div class="visitas" id="visitas">${a.telefone ? 'Buscando visitas anteriores…' : ''}</div>
     <div class="acoes">
       ${a.status === 'pendente' ? '<button class="botao cheio" data-x="confirmar">Confirmar</button><button class="botao fantasma cheio" data-x="recusar">Recusar</button>' : ''}
-      ${a.status === 'confirmado' ? '<button class="botao fantasma cheio" data-x="remarcar">Remarcar</button><button class="botao perigo cheio" data-x="cancelar">Cancelar horário</button>' : ''}
+      ${a.status === 'confirmado' ? `${a.telefone ? '<button class="botao cheio" data-x="msgconfirmar">Mandar confirmação no WhatsApp</button>' : ''}
+        <button class="botao fantasma cheio" data-x="remarcar">Remarcar</button>
+        <button class="botao perigo cheio" data-x="recusar">Recusar e liberar o horário</button>` : ''}
       ${a.telefone && !DEMO ? `<a class="botao wpp cheio" href="${esc(linkWhatsApp(a.telefone, `Olá, ${primeiroNome(a.nome)}!`) || '#')}" target="_blank" rel="noopener noreferrer">Conversar no WhatsApp</a>` : ''}
       <button class="botao fantasma cheio" data-fechar>Fechar</button>
     </div>`, (f) => {
     f.querySelectorAll('[data-x]').forEach((b) => b.onclick = async () => {
       const x = b.dataset.x;
+      if (x === 'msgconfirmar') {
+        dados.registrar(`mandou a confirmação para ${a.nome} (${diaExtenso(a.dia)} ${a.hora})`).catch(() => {});
+        return folhaMensagem('Confirmar para o cliente', a,
+          `Olá, ${primeiroNome(a.nome)}! Seu horário na Rodrigues TheBarber está confirmado: ${a.servico}, ${diaExtenso(a.dia)} às ${horaFalada(a.hora)}.\nEndereço: Av. Nestor Jardim Filho, 402.\nSe precisar remarcar, é só responder aqui. Até lá!`);
+      }
       if (x === 'cancelar') {
         const ok = await executar(b, () => dados.atualizarAgendamento(a.id, { status: 'cancelado' }), { log: `cancelou o horário de ${a.nome} (${diaExtenso(a.dia)} ${a.hora})` });
         if (ok) folhaMensagem('Horário cancelado', a, `Olá, ${primeiroNome(a.nome)}! Precisei cancelar seu horário de ${diaExtenso(a.dia)} às ${horaFalada(a.hora)}. Me desculpe. Quer marcar outro dia?`);
@@ -689,6 +727,8 @@ function desenharAjustes() {
     <div class="bloco">
       <div class="linha-aj"><div><b>Receber pedidos pelo site</b><small>Desligue nas férias. O site avisa o cliente para chamar no WhatsApp.</small></div>
         <label class="interruptor"><input type="checkbox" id="receb" ${S.config.recebendo ? 'checked' : ''} aria-label="Receber pedidos pelo site"><span></span></label></div>
+      <div class="linha-aj"><div><b>Confirmar sozinho os pedidos do site</b><small>O horário já fica reservado e o cliente avisa você no WhatsApp. Desligue para confirmar um por um.</small></div>
+        <label class="interruptor"><input type="checkbox" id="auto" ${S.config.confirmacao_automatica !== false ? 'checked' : ''} aria-label="Confirmar sozinho os pedidos do site"><span></span></label></div>
       <div class="dois">
         <label class="r">Marcar com até<select class="campo" id="antecedencia">${[7, 14, 30, 60, 90].map((d) => `<option value="${d}" ${d === S.config.antecedencia_dias ? 'selected' : ''}>${d} dias</option>`).join('')}</select></label>
         <label class="r">Aviso mínimo<select class="campo" id="aviso-min">${[[0, 'nenhum'], [30, '30 min'], [60, '1 hora'], [120, '2 horas'], [240, '4 horas'], [720, '12 horas']].map(([v, t]) => `<option value="${v}" ${v === S.config.aviso_minimo_min ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
@@ -741,6 +781,8 @@ function desenharAjustes() {
   const t = document.getElementById('t-ajustes');
   t.querySelector('#receb').onchange = (e) => executar(null, () => dados.salvarConfig({ recebendo: e.target.checked }),
     { sucesso: e.target.checked ? 'Pedidos pelo site ligados' : 'Pedidos pelo site pausados', log: e.target.checked ? 'ligou os pedidos pelo site' : 'pausou os pedidos pelo site' });
+  t.querySelector('#auto').onchange = (e) => executar(null, () => dados.salvarConfig({ confirmacao_automatica: e.target.checked }),
+    { sucesso: e.target.checked ? 'Pedidos do site entram confirmados' : 'Pedidos do site vão esperar sua confirmação', log: e.target.checked ? 'ligou a confirmação automática' : 'desligou a confirmação automática' });
   t.querySelector('#antecedencia').onchange = (e) => executar(null, () => dados.salvarConfig({ antecedencia_dias: +e.target.value }),
     { sucesso: 'Salvo', log: `mudou a antecedência para ${e.target.value} dias` });
   t.querySelector('#aviso-min').onchange = (e) => executar(null, () => dados.salvarConfig({ aviso_minimo_min: +e.target.value }),
