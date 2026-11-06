@@ -36,6 +36,8 @@ create table if not exists public.config (
 );
 alter table public.config enable row level security;
 insert into public.config (id) values (1) on conflict do nothing;
+-- pedidos do site já entram confirmados (o Tiago só mexe se quiser remarcar ou recusar)
+alter table public.config add column if not exists confirmacao_automatica boolean not null default true;
 
 -- ---------- serviços e preços (o site lê daqui) ----------
 create table if not exists public.servicos (
@@ -298,6 +300,7 @@ declare
   v_obs text := trim(coalesce(p_observacao, ''));
   v_livres json;
   v_id bigint;
+  v_status text;
 begin
   -- campo-isca preenchido: é robô. Responde como se tivesse recebido e não grava nada.
   if coalesce(p_website, '') <> '' then
@@ -305,9 +308,9 @@ begin
   end if;
 
   -- o mesmo pedido enviado de novo não vira um segundo agendamento
-  select id into v_id from agendamentos where request_id = p_request_id;
+  select id, status into v_id, v_status from agendamentos where request_id = p_request_id;
   if found then
-    return json_build_object('id', v_id, 'received', true, 'status', 'pending');
+    return json_build_object('id', v_id, 'received', true, 'status', case when v_status = 'pendente' then 'pending' else 'confirmed' end);
   end if;
 
   if p_request_id is null then raise exception 'Pedido inválido. Recarregue a página.'; end if;
@@ -325,9 +328,12 @@ begin
   select * into srv from servicos where nome = p_servico and ativo and agendavel;
   if not found then raise exception 'Serviço não encontrado. Recarregue a página.'; end if;
 
+  -- limite de horários futuros marcados pelo site para o mesmo telefone
   if (select count(*) from agendamentos
-      where status = 'pendente' and regexp_replace(telefone, '\D', '', 'g') = v_digitos) >= cfg.max_pendentes_por_telefone then
-    raise exception 'Você já tem pedidos aguardando confirmação. Fale com o Tiago pelo WhatsApp.';
+      where origem = 'site' and status in ('pendente', 'confirmado')
+        and dia >= (now() at time zone 'America/Sao_Paulo')::date
+        and regexp_replace(telefone, '\D', '', 'g') = v_digitos) >= cfg.max_pendentes_por_telefone then
+    raise exception 'Você já tem horários marcados pelo site. Para marcar mais, fale com o Tiago pelo WhatsApp.';
   end if;
 
   if (select count(*) from agendamentos
@@ -341,17 +347,18 @@ begin
   end if;
 
   begin
-    insert into agendamentos (request_id, nome, telefone, servico, preco, duracao_min, dia, hora, origem, observacao)
-    values (p_request_id, v_nome, v_tel, srv.nome, srv.preco, srv.duracao_min, p_dia, p_hora::time, 'site', v_obs)
+    v_status := case when cfg.confirmacao_automatica then 'confirmado' else 'pendente' end;
+    insert into agendamentos (request_id, nome, telefone, servico, preco, duracao_min, dia, hora, origem, observacao, status)
+    values (p_request_id, v_nome, v_tel, srv.nome, srv.preco, srv.duracao_min, p_dia, p_hora::time, 'site', v_obs, v_status)
     returning id into v_id;
   exception
     when exclusion_violation then
       raise exception 'Esse horário acabou de ser ocupado. Escolha outro.';
     when unique_violation then
-      select id into v_id from agendamentos where request_id = p_request_id;
+      select id, status into v_id, v_status from agendamentos where request_id = p_request_id;
   end;
 
-  return json_build_object('id', v_id, 'received', true, 'status', 'pending');
+  return json_build_object('id', v_id, 'received', true, 'status', case when v_status = 'pendente' then 'pending' else 'confirmed' end);
 end $$;
 
 -- o site só chama estas funções; o painel usa meu_papel

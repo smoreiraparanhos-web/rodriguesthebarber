@@ -29,7 +29,7 @@ export function criarDemo() {
   }));
 
   const db = {
-    config: { id: 1, recebendo: true, antecedencia_dias: 60, aviso_minimo_min: 60, passo_min: 30, max_pendentes_por_telefone: 3 },
+    config: { id: 1, recebendo: true, confirmacao_automatica: true, antecedencia_dias: 60, aviso_minimo_min: 60, passo_min: 30, max_pendentes_por_telefone: 3 },
     servicos,
     horario: [0, 1, 2, 3, 4, 5, 6].map((d) => ({ dia_semana: d, aberto: true, abre: '09:00', fecha: d === 0 ? '12:00' : '20:00' })),
     fechados: [],
@@ -144,7 +144,7 @@ export function criarDemo() {
       if (!e) return false;
       for (let m = e.abre; m + 45 <= e.fecha; m += 30) {
         const a = { id: ++seq, nome: 'Carlos Mendes', telefone: '(51) 99345-7781', servico: 'Corte degradê', preco: 35, duracao_min: 45,
-          dia, hora: paraHora(m), status: 'pendente', origem: 'site', observacao: '', criado: Date.now() };
+          dia, hora: paraHora(m), status: db.config.confirmacao_automatica ? 'confirmado' : 'pendente', origem: 'site', observacao: '', criado: Date.now() };
         if (!conflita(a) && !db.bloqueios.some((b) => b.dia === dia && paraMin(b.hora) < m + 45 && paraMin(b.hora) + b.duracao_min > m)) {
           db.agendamentos.push(a);
           avisar('INSERT', a);

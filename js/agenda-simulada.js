@@ -35,7 +35,7 @@ export async function chamarApi(caminho, corpo) {
 
   if (url.pathname === '/appointments' && corpo) {
     console.info('[agenda simulada] pedido recebido:', corpo);
-    return { id: corpo.requestId, status: 'pending', received: true };
+    return { id: 427, status: 'confirmed', received: true };
   }
 
   throw new Error('Rota desconhecida na agenda simulada.');
