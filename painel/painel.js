@@ -386,6 +386,13 @@ function desenharPedidos() {
       <p>${auto ? 'Os pedidos do site já entram confirmados. Toque num pedido para mandar a confirmação, remarcar ou recusar.'
         : pend.length ? `${pend.length} pedido${pend.length > 1 ? 's' : ''} esperando sua resposta. O horário só fica reservado para o cliente depois de confirmar.` : 'Tudo respondido.'}</p>
     </div>
+    <form class="busca-pedido" id="busca-pedido">
+      <label class="r" for="num-pedido">Número do pedido (vem na mensagem do WhatsApp)</label>
+      <div style="display:flex;gap:.5rem">
+        <input class="campo" id="num-pedido" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="Ex.: 0006" autocomplete="off">
+        <button class="botao peq" type="submit">Abrir</button>
+      </div>
+    </form>
     ${S.config.recebendo ? '' : '<p class="vazio">Os pedidos pelo site estão pausados. Reative em Ajustes.</p>'}
     ${pend.length ? `<p class="rotulo">Aguardando resposta</p><div class="lista">${pend.map(itemPedido).join('')}</div>` : auto ? '' : '<p class="vazio">Nenhum pedido novo. Quando chegar um, ele aparece aqui na hora.</p>'}
     ${auto ? `<p class="rotulo">Últimos agendados pelo site</p>
@@ -394,6 +401,14 @@ function desenharPedidos() {
         : '<p class="vazio">Nenhum agendamento pelo site ainda.</p>'}</div>` : ''}`;
   document.querySelectorAll('#t-pedidos [data-acao]').forEach((b) => b.onclick = () => acao(b.dataset.acao, +b.dataset.id, b));
   document.querySelectorAll('#t-pedidos [data-ver]').forEach((b) => b.onclick = () => folhaCliente(S.agendamentos.find((a) => a.id === +b.dataset.ver), true));
+  document.getElementById('busca-pedido').onsubmit = (e) => {
+    e.preventDefault();
+    const n = +document.getElementById('num-pedido').value.replace(/\D/g, '');
+    if (!n) return toast('Digite o número do pedido');
+    const a = S.agendamentos.find((x) => x.id === n);
+    if (a) folhaCliente(a, true);
+    else toast(`Pedido nº ${String(n).padStart(4, '0')} não encontrado. Ele pode ser de um dia que já passou.`);
+  };
 }
 function itemPedido(a) {
   const min = Math.max(1, Math.round((Date.now() - a.criado) / 60000));

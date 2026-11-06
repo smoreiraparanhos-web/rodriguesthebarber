@@ -559,8 +559,6 @@ function mostrarPrecos(catalogo) {
 // mensagem do pedido para o WhatsApp da barbearia, com negrito, itálico e uma informação por linha.
 // Sem emojis: o WhatsApp no computador troca os emojis que vêm pelo link por "�".
 const horaFalada = (h) => h.replace(':00', 'h').replace(':', 'h');
-// link que só a barbearia usa: abre o painel direto neste pedido (cliente vê "Acesso negado")
-const linkPainel = (numero) => new URL(`painel/#p${numero}`, location.href.replace(/[?#].*$/, '').replace(/[^/]*$/, '')).href;
 function textoPedido({ servicoNome, dia, hora, nome, obs, numero, confirmado }) {
   const item = estado.catalogo.find((s) => s.nome === servicoNome);
   const duracao = estado.servicos[servicoNome];
@@ -576,7 +574,6 @@ function textoPedido({ servicoNome, dia, hora, nome, obs, numero, confirmado }) 
   linhas.push('');
   const situacao = confirmado ? 'horário reservado' : 'aguardando confirmação';
   linhas.push(numero ? `Pedido nº ${String(numero).padStart(4, '0')} · ${situacao}` : situacao[0].toUpperCase() + situacao.slice(1));
-  if (numero) linhas.push(`_Só para a barbearia:_ ${linkPainel(numero)}`);
   return linhas.join('\n');
 }
 const linkWhatsApp = (texto) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;

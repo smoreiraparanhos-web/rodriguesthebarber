@@ -110,8 +110,8 @@ Essa chave é pública de propósito: quem protege os dados são as regras do ba
 
 1. O cliente agenda no site. O horário **já fica reservado** e some do site para os outros clientes.
 2. O site mostra "Horário reservado!" e o botão **Enviar no WhatsApp**. O WhatsApp do cliente abre com a mensagem formatada para a barbearia, e ele só toca em enviar.
-3. No fim da mensagem tem o link **"Só para a barbearia"**. Só abre no celular do Tiago ou do suporte, porque pede o login. Se o cliente tocar, vê "Acesso negado".
-4. Pelo link, o Tiago escolhe:
+3. A mensagem tem o **número do pedido** (ex.: "Pedido nº 0006"). Para mexer nele, o Tiago abre o painel, vai em **Pedidos** e toca no pedido. Os últimos aparecem no topo, e dá para buscar pelo número.
+4. No pedido, o Tiago escolhe:
    - **Mandar confirmação no WhatsApp:** abre a resposta pronta para o cliente.
    - **Remarcar:** escolhe o novo horário, e a mensagem para o cliente já sai pronta.
    - **Recusar e liberar o horário:** o horário volta a aparecer no site, e o aviso para o cliente já sai pronto.
