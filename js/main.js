@@ -459,7 +459,7 @@ const aviso = $('#aviso');
 const telefone = $('#telefone');
 const telefoneErro = $('#telefone-erro');
 
-const estado = { servicos: {}, ativo: true, antecedencia: 60, dia: '', hora: '', enviando: false };
+const estado = { servicos: {}, catalogo: [], ativo: true, antecedencia: 60, dia: '', hora: '', enviando: false };
 // identificador do pedido; celulares antigos sem randomUUID usam getRandomValues
 const novoId = () => crypto.randomUUID?.() ??
   ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
@@ -556,19 +556,50 @@ function mostrarPrecos(catalogo) {
   }
 }
 
+// mensagem do pedido para o WhatsApp da barbearia, com negrito, itálico e uma informação por linha
+const horaFalada = (h) => h.replace(':00', 'h').replace(':', 'h');
+function textoPedido({ servicoNome, dia, hora, nome, obs, numero }) {
+  const item = estado.catalogo.find((s) => s.nome === servicoNome);
+  const duracao = estado.servicos[servicoNome];
+  const linhas = ['*RODRIGUES THEBARBER*', '_Pedido de agendamento pelo site_', ''];
+  if (servicoNome) linhas.push(`✂️ *Serviço:* ${servicoNome}`);
+  if (dia) linhas.push(`📅 *Dia:* ${diaPorExtenso(dia)}`);
+  if (hora) linhas.push(`🕑 *Horário:* ${horaFalada(hora)}`);
+  if (duracao) linhas.push(`⏱️ *Duração:* ${duracao} min`);
+  if (item) linhas.push(`💰 *Valor:* ${item.preco == null ? 'a combinar' : reais(item.preco)}`);
+  linhas.push('');
+  if (nome) linhas.push(`👤 *Cliente:* ${nome}`);
+  if (obs) linhas.push(`📝 *Obs.:* ${obs}`);
+  linhas.push('');
+  linhas.push(numero ? `Pedido nº ${String(numero).padStart(4, '0')} · aguardando confirmação` : 'Aguardando confirmação');
+  return linhas.join('\n');
+}
+const linkWhatsApp = (texto) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
+
+// quando o pedido não foi registrado no site, o cliente ainda pode pedir direto pelo WhatsApp
 function mensagemWhatsApp() {
-  const partes = ['Olá, Tiago! Quero agendar um horário.'];
-  if (servico.value) partes.push(`Serviço: ${servico.value}`);
-  if (estado.dia) partes.push(`Dia: ${diaPorExtenso(estado.dia)}`);
-  if (estado.hora) partes.push(`Horário: ${estado.hora}`);
-  return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(partes.join('\n'))}`;
+  return linkWhatsApp(textoPedido({
+    servicoNome: servico.value, dia: estado.dia, hora: estado.hora, nome: $('#nome').value.trim(), obs: $('#mensagem').value.trim(),
+  }).replace('_Pedido de agendamento pelo site_', '_Quero agendar um horário_'));
 }
 
 function mostrarAviso(tipo, titulo, texto, comWhatsApp = false) {
   aviso.hidden = false;
   aviso.className = `aviso ${tipo}`;
   aviso.innerHTML = `<h3>${esc(titulo)}</h3><p>${esc(texto)}</p>` +
-    (comWhatsApp ? `<p><a class="link-ouro" href="${mensagemWhatsApp()}" target="_blank" rel="noopener noreferrer">Pedir o horário pelo WhatsApp</a></p>` : '');
+    (comWhatsApp ? `<p><a class="link-ouro" href="${esc(mensagemWhatsApp())}" target="_blank" rel="noopener noreferrer">Pedir o horário pelo WhatsApp</a></p>` : '');
+}
+
+// pedido registrado: último passo é enviar a mensagem pronta ao WhatsApp da barbearia
+function mostrarEnvioWhatsApp(pedido, numero) {
+  const texto = textoPedido({ servicoNome: pedido.service, dia: pedido.day, hora: pedido.time, nome: pedido.name, obs: pedido.notes.trim(), numero });
+  aviso.hidden = false;
+  aviso.className = 'aviso ok';
+  aviso.innerHTML = `<h3>Falta só um passo</h3>
+    <p>Envie o pedido no WhatsApp da barbearia para o Tiago receber agora:</p>
+    <p><a class="botao botao-ouro botao-wpp" href="${esc(linkWhatsApp(texto))}" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg>Enviar no WhatsApp</a></p>
+    <p class="aviso-resumo">${esc(pedido.service)}, ${esc(diaPorExtenso(pedido.day))}, às ${esc(pedido.time)}. O horário fica reservado quando o Tiago confirmar.</p>`;
 }
 
 function atualizarResumo() {
@@ -774,8 +805,7 @@ ficha.addEventListener('submit', async (e) => {
   try {
     const resposta = await chamarApi('/appointments', pedido);
     if (!resposta.received) throw new Error('O envio não foi confirmado. Tente de novo.');
-    mostrarAviso('ok', 'Pedido enviado',
-      `${pedido.service}, ${diaPorExtenso(pedido.day)}, às ${pedido.time}. O Tiago vai confirmar pelo WhatsApp ${telefone.value}. Até a confirmação, o horário ainda não está reservado.`);
+    mostrarEnvioWhatsApp(pedido, Number.isInteger(resposta.id) ? resposta.id : null);
     ficha.reset();
     pedidoId = novoId();
     estado.dia = '';
@@ -814,7 +844,7 @@ async function iniciarAgenda() {
     estado.servicos = dados.services;
     estado.ativo = dados.enabled;
     estado.antecedencia = dados.advanceDays || 60;
-    if (dados.catalogo) mostrarPrecos(dados.catalogo);
+    if (dados.catalogo) { estado.catalogo = dados.catalogo; mostrarPrecos(dados.catalogo); }
     if (Array.isArray(dados.horario) && dados.horario.length === 7) {
       const min = (h) => Number(h.slice(0, 2)) * 60 + Number(h.slice(3, 5));
       semanaHoras = dados.horario.map((h) => ({ aberto: h.aberto, abre: min(h.abre), fecha: min(h.fecha) }));
