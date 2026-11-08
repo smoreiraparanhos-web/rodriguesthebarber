@@ -62,6 +62,12 @@ os scripts do próprio site e só conversa com a agenda do Tiago e o mapa do
 Google. Se mudar o endereço da agenda ou o script pequeno do topo do
 index.html, atualize essa proteção. O passo a passo está em docs/SEGURANCA.md.
 
+ATUALIZAÇÕES E CACHE DO NAVEGADOR
+O navegador guarda o visual (css/style.css) e o script (js/main.js) por
+um tempo. Sempre que mudar um desses arquivos, aumente o número ?v= nas
+linhas que carregam esses arquivos no index.html (ex.: ?v=8 vira ?v=9).
+O mesmo vale para painel.css e painel.js em painel/index.html.
+
 FOTOS DO CAFÉ COM CANELA
 As fotos da seção do café são provisórias, do banco gratuito Pexels
 (licença livre para uso comercial, sem precisar dar crédito):
