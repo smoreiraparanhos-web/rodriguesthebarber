@@ -672,7 +672,6 @@ section.hora-marcada { overflow-x: visible; }
   text-wrap: balance;
 }
 .hm-sub { color: var(--cinza); font-size: 1.15rem; margin-bottom: .4rem; }
-.hm-cafe { font-family: var(--serif); font-style: italic; color: var(--ouro-claro); font-size: 1.1rem; margin-bottom: 1.4rem; }
 .hm-encaixe {
   color: var(--cinza);
   font-size: .92rem;
@@ -904,6 +903,97 @@ section.hora-marcada { overflow-x: visible; }
   .cartao-casa { white-space: nowrap; font-size: .95rem; }
   .cartao-corpo { padding-bottom: 4.4rem; }
   .carimbo { font-size: 1rem; right: 1rem; bottom: 1.1rem; }
+}
+
+/* ---------- café com canela ---------- */
+
+/* faixa escura de cantos arredondados, grãos de café bem apagados ao fundo
+   e a foto num círculo com aro dourado, saindo pela borda direita */
+.cafe-banner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  align-items: center;
+  min-height: 420px;
+  border: 1px solid rgba(201, 162, 74, .45);
+  border-radius: 28px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 50% 70% at 78% 50%, rgba(166, 92, 38, .3), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cg fill='none' stroke='%23c9a24a' stroke-opacity='.09' stroke-width='1.4'%3E%3Cg transform='translate(30 40) rotate(-30)'%3E%3Cellipse rx='9' ry='13'/%3E%3Cpath d='M0-12c-4 6 4 18 0 24'/%3E%3C/g%3E%3Cg transform='translate(130 30) rotate(25)'%3E%3Cellipse rx='7' ry='10'/%3E%3Cpath d='M0-9c-3 5 3 13 0 18'/%3E%3C/g%3E%3Cg transform='translate(95 120) rotate(60)'%3E%3Cellipse rx='9' ry='13'/%3E%3Cpath d='M0-12c-4 6 4 18 0 24'/%3E%3C/g%3E%3Cg transform='translate(20 150) rotate(10)'%3E%3Cellipse rx='6' ry='9'/%3E%3Cpath d='M0-8c-3 4 3 12 0 16'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") 0 0 / 180px 180px,
+    linear-gradient(120deg, #15100b, #0b0907 60%);
+}
+.cafe-texto { display: grid; gap: 1.1rem; padding: clamp(2rem, 5vw, 3.5rem); max-width: 34rem; }
+.cafe-selo {
+  justify-self: start;
+  padding: .25rem .8rem;
+  border: 1px solid var(--ouro);
+  border-radius: 99px;
+  color: var(--ouro);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.cafe-titulo {
+  font-family: var(--sans);
+  font-weight: 800;
+  font-variation-settings: "wdth" 115;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  line-height: .95;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+}
+.cafe-titulo span { display: block; color: var(--branco); }
+.cafe-titulo em {
+  display: block;
+  font-style: normal;
+  background: var(--folha);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.cafe-texto > p:last-child { color: #d8d0c2; font-size: 1.1rem; line-height: 1.6; }
+
+.cafe-fotos { position: relative; align-self: stretch; min-height: 360px; }
+.cafe-foto {
+  position: absolute;
+  top: 50%;
+  right: -8%;
+  width: min(440px, 115%);
+  aspect-ratio: 1;
+  max-width: none;
+  object-fit: cover;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 0 10px #0d0a07, 0 0 0 12px var(--ouro), 0 30px 60px -20px rgba(0, 0, 0, .8);
+}
+.cafe-detalhe {
+  position: absolute;
+  left: 2%;
+  bottom: 8%;
+  width: clamp(110px, 12vw, 150px);
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 0 0 6px #0d0a07, 0 0 0 8px var(--ouro), 0 16px 30px -10px rgba(0, 0, 0, .8);
+}
+
+/* a foto entra com um leve zoom quando a seção aparece */
+@media (prefers-reduced-motion: no-preference) {
+  .js .cafe .cafe-foto { opacity: 0; transform: translateY(-50%) scale(.94); transition: opacity .8s, transform 1s var(--sair); }
+  .js .cafe.visivel .cafe-foto { opacity: 1; transform: translateY(-50%) scale(1); }
+}
+
+@media (max-width: 760px) {
+  .cafe-banner { grid-template-columns: 1fr; min-height: 0; }
+  .cafe-fotos { order: -1; min-height: 0; height: clamp(270px, 78vw, 340px); }
+  .cafe-foto { top: auto; bottom: 0; right: 50%; width: clamp(240px, 70vw, 300px); transform: translateX(50%); }
+  .cafe-detalhe { left: 6%; bottom: 6%; width: 96px; }
+  .cafe-texto { padding-top: 1.8rem; }
+  .js .cafe .cafe-foto { transform: translateX(50%) scale(.94); }
+  .js .cafe.visivel .cafe-foto { transform: translateX(50%) scale(1); }
 }
 
 /* ---------- preços ---------- */

@@ -62,6 +62,14 @@ os scripts do próprio site e só conversa com a agenda do Tiago e o mapa do
 Google. Se mudar o endereço da agenda ou o script pequeno do topo do
 index.html, atualize essa proteção. O passo a passo está em docs/SEGURANCA.md.
 
+FOTOS DO CAFÉ COM CANELA
+As fotos da seção do café são provisórias, do banco gratuito Pexels
+(licença livre para uso comercial, sem precisar dar crédito):
+  img/cafe-canela-*.webp   https://www.pexels.com/photo/11020620/
+  img/canela-paus-400.webp https://www.pexels.com/photo/1717771/
+Quando o Tiago tirar uma foto do café dele, basta trocar esses arquivos
+mantendo os mesmos nomes (foto quadrada, com a xícara no centro).
+
 HORÁRIO DE FUNCIONAMENTO
 A placa "Aberto/Fechado", a régua do dia, a faixa da abertura, a tabela
 de horário e o rodapé seguem o horário salvo no painel (horário de
