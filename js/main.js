@@ -112,7 +112,9 @@ const fotos = [
 ];
 
 const galeria = $('#galeria');
-galeria.innerHTML = fotos.map(([nome, alt], i) => `
+// as fotos já vêm escritas no index.html; só monta pela lista se a página vier sem elas
+if (!galeria.children.length) {
+  galeria.innerHTML = fotos.map(([nome, alt], i) => `
   <li>
     <button type="button" data-foto="${nome}" data-indice="${i}" data-legenda="${alt}" aria-label="Ampliar foto: ${alt}">
       <img src="img/${nome}-480.webp" srcset="img/${nome}-480.webp 480w, img/${nome}-900.webp 900w"
@@ -120,6 +122,7 @@ galeria.innerHTML = fotos.map(([nome, alt], i) => `
         loading="lazy" decoding="async">
     </button>
   </li>`).join('');
+}
 
 // no celular a galeria começa com 6 fotos; o botão mostra as outras
 const galeriaToda = $('#galeria-toda');
