@@ -124,6 +124,7 @@
       <div class="hm-texto">
         <h2 id="hm-titulo" class="hm-titulo">A cadeira espera por você.</h2>
         <p class="hm-sub">Um cliente por vez, sempre com hora marcada.</p>
+        <p class="hm-cafe">Enquanto a cadeira te espera, tem café com canela.</p>
         <a class="botao botao-ouro" href="#agendar">Marcar meu horário</a>
         <p class="hm-encaixe">Sem horário? Se a cadeira estiver livre, o Tiago encaixa.</p>
       </div>
@@ -217,7 +218,69 @@
         <h2 id="trab-titulo" class="titulo">Saiu da cadeira do Tiago</h2>
         <p>Fotos dos clientes logo depois do corte. Toque em uma foto para ampliar.</p>
       </div>
-      <ul class="galeria recolhida" id="galeria"></ul>
+      <!-- fotos escritas aqui para o Google e outras ferramentas enxergarem; a lista em js/main.js precisa ter a mesma ordem -->
+      <ul class="galeria recolhida" id="galeria">
+        <li>
+          <button type="button" data-foto="corte-08" data-indice="0" data-legenda="Platinado com degradê nas laterais" aria-label="Ampliar foto: Platinado com degradê nas laterais">
+            <img src="img/corte-08-480.webp" srcset="img/corte-08-480.webp 480w, img/corte-08-900.webp 900w" sizes="(min-width: 760px) 25vw, 50vw" width="480" height="600" alt="Platinado com degradê nas laterais" loading="lazy" decoding="async">
+          </button>
+        </li>
+        <li>
+          <button type="button" data-foto="corte-02" data-indice="1" data-legenda="Freestyle sendo desenhado na lateral" aria-label="Ampliar foto: Freestyle sendo desenhado na lateral">
+            <img src="img/corte-02-480.webp" srcset="img/corte-02-480.webp 480w, img/corte-02-900.webp 900w" sizes="(min-width: 760px) 25vw, 50vw" width="480" height="600" alt="Freestyle sendo desenhado na lateral" loading="lazy" decoding="async">
+          </button>
+        </li>
+        <li>
+          <button type="button" data-foto="corte-05" data-indice="2" data-legenda="Corte infantil com risca lateral" aria-label="Ampliar foto: Corte infantil com risca lateral">
+            <img src="img/corte-05-480.webp" srcset="img/corte-05-480.webp 480w, img/corte-05-900.webp 900w" sizes="(min-width: 760px) 25vw, 50vw" width="480" height="600" alt="Corte infantil com risca lateral" loading="lazy" decoding="async">
+          </button>
+        </li>
+        <li>
+          <button type="button" data-foto="corte-04" data-indice="3" data-legenda="Cabelo grisalho penteado com barba branca aparada" aria-label="Ampliar foto: Cabelo grisalho penteado com barba branca aparada">
+            <img src="img/corte-04-480.webp" srcset="img/corte-04-480.webp 480w, img/corte-04-900.webp 900w" sizes="(min-width: 760px) 25vw, 50vw" width="480" height="600" alt="Cabelo grisalho penteado com barba branca aparada" loading="lazy" decoding="async">
+          </button>
+        </li>
+        <li>
+          <button type="button" data-foto="corte-07" data-indice="4" data-legenda="Cachos no topo com laterais baixas" aria-label="Ampliar foto: Cachos no topo com laterais baixas">
+            <img src="img/corte-07-480.webp" srcset="img/corte-07-480.webp 480w, img/corte-07-900.webp 900w" sizes="(min-width: 760px) 25vw, 50vw" width="480" height="600" alt="Cachos no topo com laterais baixas" loading="lazy" decoding="async">
+          </button>
+        </li>
+        <li>
+          <button type="button" data-foto="corte-09" data-indice="5" data-legenda="Barba cheia grisalha alinhada" aria-label="Ampliar foto: Barba cheia grisalha alinhada">
+            <img src="img/corte-09-480.webp" srcset="img/corte-09-480.webp 480w, img/corte-09-900.webp 900w" sizes="(min-width: 760px) 25vw, 50vw" width="480" height="600" alt="Barba cheia grisalha alinhada" loading="lazy" decoding="async">
+          </button>
+        </li>
+        <li>
+          <button type="button" data-foto="corte-06" data-indice="6" data-legenda="Degradê com franja longa, vista de lado" aria-label="Ampliar foto: Degradê com franja longa, vista de lado">
+            <img src="img/corte-06-480.webp" srcset="img/corte-06-480.webp 480w, img/corte-06-900.webp 900w" sizes="(min-width: 760px) 25vw, 50vw" width="480" height="600" alt="Degradê com franja longa, vista de lado" loading="lazy" decoding="async">
+          </button>
+        </li>
+        <li>
+          <button type="button" data-foto="corte-11" data-indice="7" data-legenda="Degradê baixo com barba curta" aria-label="Ampliar foto: Degradê baixo com barba curta">
+            <img src="img/corte-11-480.webp" srcset="img/corte-11-480.webp 480w, img/corte-11-900.webp 900w" sizes="(min-width: 760px) 25vw, 50vw" width="480" height="600" alt="Degradê baixo com barba curta" loading="lazy" decoding="async">
+          </button>
+        </li>
+        <li>
+          <button type="button" data-foto="corte-03" data-indice="8" data-legenda="Degradê com topo curto" aria-label="Ampliar foto: Degradê com topo curto">
+            <img src="img/corte-03-480.webp" srcset="img/corte-03-480.webp 480w, img/corte-03-900.webp 900w" sizes="(min-width: 760px) 25vw, 50vw" width="480" height="600" alt="Degradê com topo curto" loading="lazy" decoding="async">
+          </button>
+        </li>
+        <li>
+          <button type="button" data-foto="corte-10" data-indice="9" data-legenda="Degradê com barba desenhada" aria-label="Ampliar foto: Degradê com barba desenhada">
+            <img src="img/corte-10-480.webp" srcset="img/corte-10-480.webp 480w, img/corte-10-900.webp 900w" sizes="(min-width: 760px) 25vw, 50vw" width="480" height="600" alt="Degradê com barba desenhada" loading="lazy" decoding="async">
+          </button>
+        </li>
+        <li>
+          <button type="button" data-foto="corte-12" data-indice="10" data-legenda="Degradê com topo texturizado, vista de lado" aria-label="Ampliar foto: Degradê com topo texturizado, vista de lado">
+            <img src="img/corte-12-480.webp" srcset="img/corte-12-480.webp 480w, img/corte-12-900.webp 900w" sizes="(min-width: 760px) 25vw, 50vw" width="480" height="600" alt="Degradê com topo texturizado, vista de lado" loading="lazy" decoding="async">
+          </button>
+        </li>
+        <li>
+          <button type="button" data-foto="corte-01" data-indice="11" data-legenda="Corte baixo com barba cheia" aria-label="Ampliar foto: Corte baixo com barba cheia">
+            <img src="img/corte-01-480.webp" srcset="img/corte-01-480.webp 480w, img/corte-01-900.webp 900w" sizes="(min-width: 760px) 25vw, 50vw" width="480" height="600" alt="Corte baixo com barba cheia" loading="lazy" decoding="async">
+          </button>
+        </li>
+      </ul>
       <button type="button" class="botao botao-linha galeria-toda" id="galeria-toda" aria-controls="galeria" aria-expanded="false">Ver todas as 12 fotos</button>
       <p class="galeria-mais"><a class="link-ouro" href="https://instagram.com/rodriguesthebarber4239" target="_blank" rel="noopener noreferrer">Veja mais cortes no Instagram @rodriguesthebarber4239</a></p>
     </section>

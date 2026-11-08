@@ -672,6 +672,7 @@ section.hora-marcada { overflow-x: visible; }
   text-wrap: balance;
 }
 .hm-sub { color: var(--cinza); font-size: 1.15rem; margin-bottom: .4rem; }
+.hm-cafe { font-family: var(--serif); font-style: italic; color: var(--ouro-claro); font-size: 1.1rem; margin-bottom: 1.4rem; }
 .hm-encaixe {
   color: var(--cinza);
   font-size: .92rem;
