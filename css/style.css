@@ -672,7 +672,6 @@ section.hora-marcada { overflow-x: visible; }
   text-wrap: balance;
 }
 .hm-sub { color: var(--cinza); font-size: 1.15rem; margin-bottom: .4rem; }
-.hm-cafe { font-family: var(--serif); font-style: italic; color: var(--ouro-claro); font-size: 1.1rem; margin-bottom: 1.4rem; }
 .hm-encaixe {
   color: var(--cinza);
   font-size: .92rem;
@@ -904,6 +903,84 @@ section.hora-marcada { overflow-x: visible; }
   .cartao-casa { white-space: nowrap; font-size: .95rem; }
   .cartao-corpo { padding-bottom: 4.4rem; }
   .carimbo { font-size: 1rem; right: 1rem; bottom: 1.1rem; }
+}
+
+/* ---------- café com canela ---------- */
+
+/* luz quente de cafeteria: brilho âmbar atrás da xícara, sobre o preto */
+.cafe {
+  position: relative;
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  align-items: center;
+  gap: clamp(2rem, 6vw, 5rem);
+}
+.cafe::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 auto 0 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  background:
+    radial-gradient(ellipse 38% 60% at 28% 55%, rgba(166, 92, 38, .28), transparent 70%),
+    radial-gradient(ellipse 60% 80% at 30% 50%, rgba(60, 30, 14, .55), transparent 75%),
+    linear-gradient(180deg, #000, #0d0805 30%, #0d0805 70%, #000);
+  pointer-events: none;
+}
+section.cafe { overflow-x: visible; }
+.cafe-arte { display: grid; place-items: center; }
+.xicara { width: min(320px, 72vw); height: auto; overflow: visible; }
+.xicara .pires, .xicara .caneca {
+  fill: none;
+  stroke: var(--ouro);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.xicara .pires { fill: #120a05; }
+.xicara .pires.fino { fill: none; stroke-opacity: .45; stroke-width: 1.2; }
+.xicara .caneca:first-of-type { fill: #120a05; }
+.xicara .cafe-liquido { fill: #3b1f0e; stroke: var(--ouro); stroke-width: 1.5; }
+.xicara .canela-po { fill: #c47a3a; }
+.xicara .canela-pau rect, .xicara .canela-pau ellipse { fill: #6e3a1a; stroke: var(--ouro); stroke-width: 1.2; }
+.xicara .vapor path {
+  fill: none;
+  stroke: var(--ouro-claro);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: .55;
+}
+.cafe-texto { display: grid; gap: 1rem; max-width: 34rem; }
+.cafe-texto > p { color: #cfc8ba; font-size: 1.1rem; }
+.cafe-selo {
+  justify-self: start;
+  padding: .2rem .7rem;
+  border: 1px solid var(--ouro);
+  border-radius: 99px;
+  color: var(--ouro);
+  font-size: .78rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.cafe-texto > p.cafe-selo { color: var(--ouro); font-size: .78rem; }
+.cafe-texto > p.cafe-nota { font-family: var(--serif); font-style: italic; color: var(--ouro-claro); font-size: 1.15rem; }
+
+/* o vapor sobe devagar, em ondas defasadas */
+@media (prefers-reduced-motion: no-preference) {
+  .xicara .vapor path { animation: vapor 4.5s ease-in-out infinite; transform-box: fill-box; transform-origin: bottom; }
+  .xicara .vapor path:nth-child(2) { animation-delay: 1.4s; }
+  .xicara .vapor path:nth-child(3) { animation-delay: 2.8s; }
+}
+@keyframes vapor {
+  0% { opacity: 0; transform: translateY(10px) scaleY(.8); }
+  35% { opacity: .6; }
+  100% { opacity: 0; transform: translateY(-14px) scaleY(1.1); }
+}
+
+@media (max-width: 760px) {
+  .cafe { grid-template-columns: 1fr; text-align: left; }
+  .xicara { width: min(240px, 64vw); }
 }
 
 /* ---------- preços ---------- */
