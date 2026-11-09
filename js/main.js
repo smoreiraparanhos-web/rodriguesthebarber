@@ -601,11 +601,11 @@ function mostrarEnvioWhatsApp(pedido, numero, confirmado) {
   aviso.hidden = false;
   aviso.className = 'aviso ok';
   aviso.innerHTML = `<h3>${confirmado ? 'Horário reservado!' : 'Falta só um passo'}</h3>
-    <p>${confirmado ? 'Agora envie a mensagem no WhatsApp para avisar o Tiago:' : 'Envie o pedido no WhatsApp da barbearia para o Tiago receber agora:'}</p>
+    <p>${confirmado ? 'Agora envie a mensagem no WhatsApp para avisar a barbearia:' : 'Envie o pedido no WhatsApp para a barbearia receber agora:'}</p>
     <p><a class="botao botao-ouro botao-wpp" href="${esc(linkWhatsApp(texto))}" target="_blank" rel="noopener noreferrer">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg>Enviar no WhatsApp</a></p>
     <p class="aviso-resumo">${esc(pedido.service)}, ${esc(diaPorExtenso(pedido.day))}, às ${esc(pedido.time)}. ${confirmado
-      ? 'Se precisar mudar algo, o Tiago te chama no WhatsApp.' : 'O horário fica reservado quando o Tiago confirmar.'}</p>`;
+      ? 'Se precisar mudar algo, a gente te chama no WhatsApp.' : 'O horário fica reservado quando a barbearia confirmar.'}</p>`;
 }
 
 function atualizarResumo() {
@@ -704,7 +704,7 @@ async function buscarHorarios() {
     if (minha !== consulta) return;
     if (!dados.enabled) {
       livres = []; desenharHorarios();
-      horariosStatus.textContent = 'Os pedidos pelo site estão pausados no momento. Fale com o Tiago pelo WhatsApp.';
+      horariosStatus.textContent = 'Os pedidos pelo site estão pausados no momento. Fale com a barbearia pelo WhatsApp.';
       return;
     }
     livres = dados.slots;
@@ -839,7 +839,7 @@ async function iniciarAgenda() {
   const usarBanco = SUPABASE.url && SUPABASE.chave;
   if (LOCAL && !new URLSearchParams(location.search).has('banco')) {
     // No computador de quem desenvolve, usa uma agenda simulada:
-    // nenhum pedido de teste chega ao painel do Tiago. (Para testar o banco de verdade, abra com ?banco)
+    // nenhum pedido de teste chega ao painel da barbearia. (Para testar o banco de verdade, abra com ?banco)
     chamarApi = (await import('./agenda-simulada.js')).chamarApi;
   } else if (usarBanco) {
     chamarApi = chamarSupabase;
@@ -863,11 +863,11 @@ async function iniciarAgenda() {
       Object.entries(dados.services).map(([nome, min]) => `<option value="${esc(nome)}">${esc(nome)} · ${min} min</option>`).join('');
     servico.disabled = false;
     if (!dados.enabled) {
-      mostrarAviso('falha', 'Agenda pausada', 'Os pedidos pelo site estão pausados no momento. Fale com o Tiago pelo WhatsApp.', true);
+      mostrarAviso('falha', 'Agenda pausada', 'Os pedidos pelo site estão pausados no momento. Fale com a barbearia pelo WhatsApp.', true);
     }
   } catch {
     servico.innerHTML = '<option value="">Agenda indisponível</option>';
-    mostrarAviso('falha', 'A agenda não carregou', 'Recarregue a página em instantes ou peça seu horário direto ao Tiago.', true);
+    mostrarAviso('falha', 'A agenda não carregou', 'Recarregue a página em instantes ou peça seu horário direto pelo WhatsApp.', true);
   }
 }
 iniciarAgenda();

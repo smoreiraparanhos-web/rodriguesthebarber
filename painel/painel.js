@@ -463,9 +463,9 @@ function folhaRecusar(a) {
     f.querySelector('#ok').onclick = async (ev) => {
       const ok = await executar(ev.currentTarget, () => dados.atualizarAgendamento(a.id, { status: 'recusado' }), { log: `recusou o pedido de ${a.nome} (${diaExtenso(a.dia)} ${a.hora})` });
       if (!ok) return;
-      const txt = { ocupado: `Infelizmente não vou conseguir te atender ${diaExtenso(a.dia)} às ${horaFalada(a.hora)}.`, fora: `Infelizmente não vou atender ${diaExtenso(a.dia)}.`, outro: 'Infelizmente não vou conseguir nesse horário.' }[motivo];
+      const txt = { ocupado: `Infelizmente não vamos conseguir te atender ${diaExtenso(a.dia)} às ${horaFalada(a.hora)}.`, fora: `Infelizmente não vamos atender ${diaExtenso(a.dia)}.`, outro: 'Infelizmente não vamos conseguir nesse horário.' }[motivo];
       folhaMensagem('Pedido recusado', a, `Olá, ${primeiroNome(a.nome)}! ${txt}` +
-        (sugestao ? ` Tenho horário ${diaExtenso(sugestao.dia)} às ${horaFalada(sugestao.hora)}. Quer que eu reserve para você?` : ' Me diga outro dia que te encaixo.'));
+        (sugestao ? ` Temos horário ${diaExtenso(sugestao.dia)} às ${horaFalada(sugestao.hora)}. Quer que a gente reserve para você?` : ' Diga outro dia que a gente te encaixa.'));
     };
   });
 }
@@ -600,7 +600,7 @@ function folhaCliente(a, doLink = false) {
       }
       if (x === 'cancelar') {
         const ok = await executar(b, () => dados.atualizarAgendamento(a.id, { status: 'cancelado' }), { log: `cancelou o horário de ${a.nome} (${diaExtenso(a.dia)} ${a.hora})` });
-        if (ok) folhaMensagem('Horário cancelado', a, `Olá, ${primeiroNome(a.nome)}! Precisei cancelar seu horário de ${diaExtenso(a.dia)} às ${horaFalada(a.hora)}. Me desculpe. Quer marcar outro dia?`);
+        if (ok) folhaMensagem('Horário cancelado', a, `Olá, ${primeiroNome(a.nome)}! Precisamos cancelar seu horário de ${diaExtenso(a.dia)} às ${horaFalada(a.hora)}. Pedimos desculpas. Quer marcar outro dia?`);
         return;
       }
       fecharFolha();
@@ -693,7 +693,7 @@ function folhaRemarcar(a) {
       const antes = `${diaExtenso(a.dia)} às ${a.hora}`;
       const ok = await executar(ev.currentTarget, () => dados.atualizarAgendamento(a.id, { dia, hora, status: a.status === 'pendente' ? 'confirmado' : a.status }),
         { log: `remarcou ${a.nome} de ${antes} para ${diaExtenso(dia)} às ${hora}` });
-      if (ok) folhaMensagem('Horário remarcado', { ...a, dia, hora }, `Olá, ${primeiroNome(a.nome)}! Seu horário foi remarcado para ${diaExtenso(dia)} às ${horaFalada(hora)}. Qualquer coisa, me chama aqui.`);
+      if (ok) folhaMensagem('Horário remarcado', { ...a, dia, hora }, `Olá, ${primeiroNome(a.nome)}! Seu horário foi remarcado para ${diaExtenso(dia)} às ${horaFalada(hora)}. Qualquer coisa, chama a gente aqui.`);
     };
   });
 }

@@ -322,7 +322,7 @@ begin
 
   select * into cfg from config where id = 1;
   if not cfg.recebendo then
-    raise exception 'Os pedidos pelo site estão pausados no momento. Fale com o Tiago pelo WhatsApp.';
+    raise exception 'Os pedidos pelo site estão pausados no momento. Fale com a barbearia pelo WhatsApp.';
   end if;
 
   select * into srv from servicos where nome = p_servico and ativo and agendavel;
@@ -333,7 +333,7 @@ begin
       where origem = 'site' and status in ('pendente', 'confirmado')
         and dia >= (now() at time zone 'America/Sao_Paulo')::date
         and regexp_replace(telefone, '\D', '', 'g') = v_digitos) >= cfg.max_pendentes_por_telefone then
-    raise exception 'Você já tem horários marcados pelo site. Para marcar mais, fale com o Tiago pelo WhatsApp.';
+    raise exception 'Você já tem horários marcados pelo site. Para marcar mais, fale com a barbearia pelo WhatsApp.';
   end if;
 
   if (select count(*) from agendamentos

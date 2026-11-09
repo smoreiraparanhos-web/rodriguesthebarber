@@ -2,13 +2,13 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <!-- Proteção do site: o navegador só roda os scripts daqui, só conversa com a agenda do Tiago
+  <!-- Proteção do site: o navegador só roda os scripts daqui, só conversa com a agenda da barbearia
        e só abre o mapa do Google. Ao mudar o script pequeno do <head>, atualize o sha256 (veja docs/SEGURANCA.md). -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://rodrigues-painel-tiago.adeptcharm4.chatgpt.site https://*.supabase.co; frame-src https://www.google.com https://maps.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rodrigues TheBarber | Barbearia em Eldorado do Sul</title>
-  <meta name="description" content="Barbearia do Tiago Gouvea Rodrigues em Eldorado do Sul, RS. Degradê, barba, pigmentação, luzes e platinado com hora marcada. Agende pelo site.">
+  <meta name="description" content="Rodrigues TheBarber, barbearia em Eldorado do Sul, RS. Degradê, barba, pigmentação, luzes e platinado, com hora marcada. Agende pelo site.">
   <meta name="theme-color" content="#000000">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Rodrigues TheBarber">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Bodoni+Moda:ital,opsz,wght@0,6..96,500..800;1,6..96,500..700&family=Nothing+You+Could+Do&display=swap">
   <link rel="preload" as="image" href="img/tiago-retrato-900.webp" imagesrcset="img/tiago-retrato-480.webp 480w, img/tiago-retrato-900.webp 900w" imagesizes="(min-width: 900px) 34vw, 70vw">
   <!-- ?v=: aumente o número sempre que mudar o CSS ou o JS, para o navegador baixar a versão nova -->
-  <link rel="stylesheet" href="css/style.css?v=8">
+  <link rel="stylesheet" href="css/style.css?v=9">
   <script>document.documentElement.classList.add('js')</script>
   <script type="application/ld+json">
   {
@@ -73,7 +73,7 @@
 
   <main id="conteudo">
     <!-- Abertura: letreiro em folha de ouro, poste giratório e a vitrine em arco,
-         iluminados como o retrato do Tiago: feixes violeta e fumaça -->
+         iluminados como o retrato da abertura: feixes violeta e fumaça -->
     <section class="abertura" id="inicio" aria-labelledby="titulo">
       <div class="abertura-luz" aria-hidden="true">
         <span class="fumaca fumaca-1"></span>
@@ -86,7 +86,7 @@
           <span class="letreiro-linha letreiro-2">TheBarber</span>
         </h1>
         <p class="abertura-frase">Aqui o casual vira chique.</p>
-        <p class="abertura-sub">Degradê, barba na navalha, pigmentação e platinado com o Tiago, que atende um cliente por vez e com hora marcada.</p>
+        <p class="abertura-sub">Degradê, barba na navalha, pigmentação e platinado, feitos com calma e capricho em cada detalhe.</p>
         <div class="abertura-acoes">
           <a class="botao botao-ouro" href="#agendar">Agendar horário</a>
           <a class="botao botao-linha" href="#precos">Ver preços</a>
@@ -103,7 +103,7 @@
           <span class="selo-num">20+</span>
           <span class="selo-txt">anos de<br>cadeira</span>
         </p>
-        <p class="assinatura">Tiago Rodrigues</p>
+        <p class="assinatura">Rodrigues TheBarber</p>
       </div>
 
       <!-- faixa de informações rápidas no pé da abertura -->
@@ -126,11 +126,11 @@
         <h2 id="hm-titulo" class="hm-titulo">A cadeira espera por você.</h2>
         <p class="hm-sub">Um cliente por vez, sempre com hora marcada.</p>
         <a class="botao botao-ouro" href="#agendar">Marcar meu horário</a>
-        <p class="hm-encaixe">Sem horário? Se a cadeira estiver livre, o Tiago encaixa.</p>
+        <p class="hm-encaixe">Sem horário? Se a cadeira estiver livre, a gente encaixa.</p>
       </div>
 
       <!-- cartão de horário de barbearia: mostra o agendamento em vez de explicar -->
-      <figure class="cartao" id="cartao" aria-label="Exemplo de cartão de horário: você agenda, o Tiago confirma pelo WhatsApp e a cadeira fica reservada.">
+      <figure class="cartao" id="cartao" aria-label="Exemplo de cartão de horário: você agenda, a cadeira fica reservada e a confirmação chega pelo WhatsApp.">
         <div class="cartao-corpo" aria-hidden="true">
           <div class="cartao-topo">
             <span class="marca-r">R</span>
@@ -162,7 +162,7 @@
           <p>A única barbearia de Eldorado do Sul que serve café. Enquanto a cadeira te espera, aproveite nosso café especial com toque de canela.</p>
         </div>
         <div class="cafe-fotos">
-          <img class="cafe-foto" src="img/cafe-canela-900.webp" srcset="img/cafe-canela-480.webp 480w, img/cafe-canela-900.webp 900w" sizes="(min-width: 900px) 420px, 70vw" width="900" height="900" alt="Canela em pó caindo sobre uma xícara de café" loading="lazy" decoding="async">
+          <img class="cafe-foto" src="img/cafe-canela-900.webp" srcset="img/cafe-canela-480.webp 480w, img/cafe-canela-900.webp 900w" sizes="(min-width: 900px) 420px, 70vw" width="900" height="900" alt="Xícara de café preto com um pau de canela" loading="lazy" decoding="async">
           <img class="cafe-detalhe" src="img/canela-paus-400.webp" width="400" height="400" alt="" loading="lazy" decoding="async">
         </div>
       </div>
@@ -172,7 +172,7 @@
     <section class="precos faixa-carvao" id="precos" aria-labelledby="precos-titulo">
       <div class="secao-cabeca">
         <h2 id="precos-titulo" class="titulo">Tabela da casa</h2>
-        <p>Visagismo incluso: o Tiago indica o corte que combina com o formato do seu rosto. Pagamento no local, em dinheiro, Pix ou cartão.</p>
+        <p>Visagismo incluso: indicamos o corte que combina com o formato do seu rosto. Pagamento no local, em dinheiro, Pix ou cartão.</p>
       </div>
 
       <div class="quadro">
@@ -224,13 +224,13 @@
       <p class="precos-acao"><a class="botao botao-ouro" href="#agendar">Escolher serviço e horário</a></p>
     </section>
 
-    <!-- Trabalhos: fotos reais da cadeira do Tiago -->
+    <!-- Trabalhos: fotos reais da cadeira da casa -->
     <section class="trabalhos" id="trabalhos" aria-labelledby="trab-titulo">
       <!-- películas de filme 35 mm que deslizam ao rolar a página -->
       <div class="pelicula pelicula-topo" aria-hidden="true"><span class="pelicula-txt"></span></div>
       <div class="pelicula pelicula-base" aria-hidden="true"><span class="pelicula-txt"></span></div>
       <div class="secao-cabeca">
-        <h2 id="trab-titulo" class="titulo">Saiu da cadeira do Tiago</h2>
+        <h2 id="trab-titulo" class="titulo">Saiu da nossa cadeira</h2>
         <p>Fotos dos clientes logo depois do corte. Toque em uma foto para ampliar.</p>
       </div>
       <!-- fotos escritas aqui para o Google e outras ferramentas enxergarem; a lista em js/main.js precisa ter a mesma ordem -->
@@ -300,12 +300,12 @@
       <p class="galeria-mais"><a class="link-ouro" href="https://instagram.com/rodriguesthebarber4239" target="_blank" rel="noopener noreferrer">Veja mais cortes no Instagram @rodriguesthebarber4239</a></p>
     </section>
 
-    <!-- Sobre o Tiago -->
+    <!-- Sobre a casa (a marca fala no "nós"; o profissional não aparece pelo nome) -->
     <section class="tiago" aria-labelledby="tiago-titulo">
       <img class="tiago-fundo" src="img/estampa-barbeiro.webp" width="1400" height="1380" alt="" loading="lazy" decoding="async">
       <div class="tiago-texto">
-        <h2 id="tiago-titulo" class="titulo">Tiago Gouvea Rodrigues</h2>
-        <p>São mais de vinte anos de profissão, do degradê clássico ao freestyle, da barba na toalha quente ao platinado. O Tiago conversa antes de pegar a máquina, explica o que vai fazer e só termina quando o corte está do jeito que você imaginou.</p>
+        <h2 id="tiago-titulo" class="titulo">O jeito da casa</h2>
+        <p>São mais de vinte anos de profissão, do degradê clássico ao freestyle, da barba na toalha quente ao platinado. Na Rodrigues TheBarber, a gente conversa antes de pegar a máquina, explica o que vai fazer e só termina quando o corte está do jeito que você imaginou. Prezamos pelo seu tempo e pela qualidade do resultado.</p>
         <blockquote>
           <p>Pelos longos anos que conheço esse profissional, sempre se dedicou não só nessa profissão, mas sim em tudo que presenciei, sempre em busca de chegar à perfeição.</p>
           <footer>Anderson Dutra, cliente, no Google</footer>
@@ -318,7 +318,7 @@
       </div>
     </section>
 
-    <!-- Agendamento ligado à agenda do Tiago -->
+    <!-- Agendamento ligado à agenda da barbearia -->
     <section class="agendar" id="agendar" aria-labelledby="ag-titulo">
       <!-- relógio de parede de barbearia: marca a hora real e gira até o horário escolhido -->
       <svg class="relogio" id="relogio" viewBox="-100 -100 200 200" aria-hidden="true">
@@ -339,7 +339,7 @@
       </svg>
       <div class="agendar-lado">
         <h2 id="ag-titulo" class="titulo">Agendar horário</h2>
-        <p>O horário fica reservado quando o Tiago confirma pelo WhatsApp.</p>
+        <p>O horário fica reservado na hora. Se precisar mudar algo, a gente avisa pelo WhatsApp.</p>
         <ul class="agendar-info">
           <li>Remarcar ou cancelar: <a class="link-ouro" href="https://wa.me/5551994659011" target="_blank" rel="noopener noreferrer">(51) 99465-9011</a></li>
           <li>Pagamento no local: dinheiro, Pix ou cartão</li>
@@ -399,10 +399,10 @@
         <details class="privacidade" id="privacidade">
           <summary>Ao solicitar, você concorda com o uso dos seus dados para o agendamento. <span>Como seus dados são usados</span></summary>
           <div class="privacidade-texto">
-            <p><strong>Quem recebe:</strong> Tiago Gouvea Rodrigues, da Rodrigues TheBarber.</p>
+            <p><strong>Quem recebe:</strong> a Rodrigues TheBarber.</p>
             <p><strong>O que é coletado:</strong> nome, WhatsApp, serviço, dia, horário e a observação, se você escrever uma.</p>
-            <p><strong>Para quê:</strong> registrar o seu pedido na agenda do Tiago e confirmar, remarcar ou cancelar o horário pelo WhatsApp. Seus dados não são vendidos nem usados para propaganda.</p>
-            <p><strong>Onde ficam:</strong> no sistema de agenda da barbearia, que só o Tiago acessa.</p>
+            <p><strong>Para quê:</strong> registrar o seu pedido na agenda da barbearia e confirmar, remarcar ou cancelar o horário pelo WhatsApp. Seus dados não são vendidos nem usados para propaganda.</p>
+            <p><strong>Onde ficam:</strong> no sistema de agenda da barbearia, com acesso restrito à casa.</p>
             <p><strong>Seus direitos:</strong> você pode pedir para ver, corrigir ou apagar seus dados a qualquer momento pelo WhatsApp <a class="link-ouro" href="https://wa.me/5551994659011" target="_blank" rel="noopener noreferrer">(51) 99465-9011</a>.</p>
             <p>Este site não usa cookies nem ferramentas de rastreamento. O mapa da seção "Onde fica" é do Google e segue a política de privacidade do Google.</p>
           </div>
@@ -534,6 +534,6 @@
     <button type="button" class="seta seta-prox" aria-label="Próxima foto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
   </dialog>
 
-  <script src="js/main.js?v=8" type="module"></script>
+  <script src="js/main.js?v=9" type="module"></script>
 </body>
 </html>
