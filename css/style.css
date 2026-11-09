@@ -1026,13 +1026,66 @@ section.hora-marcada { overflow-x: visible; }
   .js .cafe.visivel .cafe-foto { transform: translateX(50%) scale(1); }
 }
 
-/* agendamento recolhido: aparece quando a pessoa toca em um botão de agendar */
+/* página de agendamento: cobre a tela, rola por dentro e tem a barra "Voltar ao site" */
 .agendar[hidden] { display: none !important; }
 .agendar:focus { outline: none; }
-@media (prefers-reduced-motion: no-preference) {
-  .agendar.abrindo { animation: abrir-agenda .7s var(--sair); }
+.agendar:not([hidden]) {
+  --pad: max(var(--gutter), calc((100vw - var(--largura)) / 2));
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  max-width: none;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  align-content: start;
+  padding: 0 var(--pad) calc(3rem + env(safe-area-inset-bottom, 0px));
+  background:
+    radial-gradient(ellipse 60% 50% at 25% 30%, rgba(214, 172, 82, .1), transparent 70%),
+    radial-gradient(ellipse 80% 70% at 50% 40%, #1d1913, #090807 80%);
 }
-@keyframes abrir-agenda { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.agendar-topo {
+  grid-column: 1 / -1;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 calc(-1 * var(--pad)) clamp(1.5rem, 4vw, 3rem);
+  padding: calc(.8rem + env(safe-area-inset-top, 0px)) var(--pad) .8rem;
+  background: rgba(10, 9, 7, .94);
+  border-bottom: 1px solid rgba(201, 162, 74, .35);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.agendar-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 44px;
+  padding: .5rem 1rem;
+  border: 1px solid rgba(201, 162, 74, .6);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--creme, #efe6d2);
+  font-family: var(--serif);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color .2s, color .2s;
+}
+.agendar-voltar:hover { background: var(--ouro); color: #000; }
+.agendar-marca { display: flex; align-items: center; gap: .8rem; font-family: var(--serif); font-size: .78rem; letter-spacing: .3em; text-transform: uppercase; color: var(--creme, #efe6d2); white-space: nowrap; }
+.agendar-marca-r { font-style: italic; font-size: 1.6rem; letter-spacing: 0; padding-right: .8rem; border-right: 1px solid rgba(201, 162, 74, .5); }
+body.agenda-aberta { overflow: hidden; }
+body.agenda-aberta .barra-agendar { display: none; }
+@media (max-width: 520px) { .agendar-marca { display: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .agendar.abrindo { animation: abrir-agenda .45s var(--sair); }
+}
+@keyframes abrir-agenda { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 
 /* ---------- fitas entre as seções ----------
    a mesma ideia das películas da galeria, com os detalhes de cada seção:
