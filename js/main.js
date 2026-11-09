@@ -405,23 +405,35 @@ const balancarPlaca = () => {
 placa.addEventListener('pointerenter', balancarPlaca);
 placa.addEventListener('click', balancarPlaca);
 
-/* ---------- agendamento recolhido ---------- */
+/* ---------- página de agendamento ---------- */
 
-// a ficha de agendamento fica escondida e aparece quando a pessoa toca em qualquer botão de agendar
+// o agendamento abre como uma página por cima do site, com "Voltar ao site";
+// o endereço ganha #agendar, e o botão voltar do celular fecha a página
 const secaoAgendar = $('#agendar');
-function abrirAgendamento(rolar = true) {
-  const estavaFechada = secaoAgendar.hidden;
+let agendaNaHistoria = false;
+let quemAbriu = null;
+function abrirAgendamento(empurrar = true) {
+  if (!secaoAgendar.hidden) return;
+  quemAbriu = document.activeElement;
   secaoAgendar.hidden = false;
-  if (estavaFechada) {
-    secaoAgendar.classList.remove('abrindo');
-    void secaoAgendar.offsetWidth;
-    secaoAgendar.classList.add('abrindo');
-    apontarParaMapa();
-  }
-  if (rolar) {
-    secaoAgendar.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-    secaoAgendar.focus({ preventScroll: true });
-  }
+  document.body.classList.add('agenda-aberta');
+  secaoAgendar.scrollTop = 0;
+  secaoAgendar.classList.remove('abrindo');
+  void secaoAgendar.offsetWidth;
+  secaoAgendar.classList.add('abrindo');
+  secaoAgendar.focus({ preventScroll: true });
+  if (empurrar) { history.pushState({ agenda: true }, '', '#agendar'); agendaNaHistoria = true; }
+}
+function fecharAgendamento() {
+  if (secaoAgendar.hidden) return;
+  secaoAgendar.hidden = true;
+  document.body.classList.remove('agenda-aberta');
+  quemAbriu?.focus?.({ preventScroll: true });
+}
+function voltarAoSite() {
+  if (agendaNaHistoria) { history.back(); return; }
+  fecharAgendamento();
+  history.replaceState(null, '', location.pathname + location.search);
 }
 if (location.hash === '#agendar') abrirAgendamento(false);
 else secaoAgendar.hidden = true;
@@ -430,7 +442,14 @@ document.addEventListener('click', (e) => {
   if (!link) return;
   e.preventDefault();
   abrirAgendamento();
-  history.replaceState(null, '', '#agendar');
+});
+$('#agendar-voltar').addEventListener('click', voltarAoSite);
+addEventListener('popstate', () => {
+  if (location.hash === '#agendar') abrirAgendamento(false);
+  else { agendaNaHistoria = false; fecharAgendamento(); }
+});
+addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !secaoAgendar.hidden && !document.querySelector('dialog[open]')) voltarAoSite();
 });
 
 /* ---------- barra fixa de agendamento no celular ---------- */
