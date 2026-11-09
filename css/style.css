@@ -2486,7 +2486,7 @@ h2.titulo::after {
 .ritual { transition: background-position .9s var(--sair); }
 .ritual:hover { background-position: 100% 0; }
 
-/* galeria: moldura que se fecha e legenda que sobe */
+/* galeria: filete dourado que se fecha ao passar o dedo ou o mouse */
 .galeria button { position: relative; }
 .galeria button::before {
   content: "";
@@ -2499,26 +2499,7 @@ h2.titulo::after {
   transition: opacity .35s, transform .5s var(--sair);
   pointer-events: none;
 }
-.galeria button::after {
-  content: attr(data-legenda);
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  padding: 3rem 1.25rem 1.1rem;
-  background: linear-gradient(transparent, rgba(0, 0, 0, .85));
-  color: var(--branco);
-  font-size: .9rem;
-  line-height: 1.35;
-  text-align: left;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity .3s, transform .45s var(--sair);
-  pointer-events: none;
-}
 .galeria button:hover::before, .galeria button:focus-visible::before { opacity: 1; transform: none; }
-.galeria button:hover::after, .galeria button:focus-visible::after { opacity: 1; transform: none; }
 
 /* agendamento */
 .horarios .chip { animation: entrar-chip .35s var(--sair) both; animation-delay: calc(var(--i, 0) * 22ms); }
@@ -2717,7 +2698,7 @@ section.abertura { overflow-x: visible; }
   letter-spacing: .42em;
   text-transform: uppercase;
   color: var(--ouro);
-  margin: -.2em 0 0 .1em;
+  margin: .28em 0 0 .1em;
 }
 .letreiro::after { content: ""; display: block; width: 104px; height: 2px; margin-top: 1.6rem; background: var(--ouro); }
 .abertura-frase { color: var(--creme); font-weight: 500; font-size: clamp(1.6rem, 3vw, 2.3rem); }
@@ -2956,6 +2937,47 @@ section.abertura { overflow-x: visible; }
   .tesoura-antiga { opacity: .16; right: -10%; }
   .numeros div { padding-inline: .4rem; }
 }
+
+
+/* ---------- galeria em sala de museu clássico ----------
+   fundo de pedra como o da abertura, a grega (meandro) dourada no alto e
+   embaixo da grade, colunas finas nas laterais e cada foto num quadro com
+   passe-partout de pedra e filete dourado */
+.trabalhos::before {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='900' preserveAspectRatio='none'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0035 .006' numOctaves='5' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .17 0 0 0 0 .13 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat,
+    radial-gradient(ellipse 70% 60% at 50% 45%, #241e18, #0b0a08 80%) !important;
+}
+.galeria-moldura {
+  position: relative;
+  padding: 40px clamp(14px, 3vw, 34px);
+  border-left: 3px double rgba(201, 162, 74, .55);
+  border-right: 3px double rgba(201, 162, 74, .55);
+}
+.galeria-moldura::before, .galeria-moldura::after {
+  content: "";
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  height: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='20'%3E%3Cpath d='M0 18H22V4H6V14H16V9H11' fill='none' stroke='%23c9a24a' stroke-opacity='.75' stroke-width='1.6' stroke-linecap='square'/%3E%3Cpath d='M22 18H28' fill='none' stroke='%23c9a24a' stroke-opacity='.75' stroke-width='1.6'/%3E%3C/svg%3E") center / 28px 20px repeat-x;
+  border-block: 1px solid rgba(201, 162, 74, .55);
+  box-sizing: content-box;
+  padding-block: 3px;
+}
+.galeria-moldura::before { top: 0; }
+.galeria-moldura::after { bottom: 0; transform: scaleY(-1); }
+.galeria { gap: clamp(.8rem, 1.8vw, 1.4rem); }
+.galeria button {
+  padding: clamp(5px, .8vw, 9px);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.09' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .44 0 0 0 0 .36 0 0 0 .3 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, #4d4438, #2a241d);
+  border: 1px solid rgba(201, 162, 74, .55);
+  box-shadow: inset 0 1px 0 rgba(255, 240, 210, .15), 0 14px 26px -14px rgba(0, 0, 0, .9);
+}
+.galeria button img { outline: 1px solid rgba(201, 162, 74, .5); outline-offset: 3px; }
+.galeria button::before { inset: clamp(12px, 1.6vw, 18px); }
 
 /* ---------- movimento reduzido ---------- */
 
