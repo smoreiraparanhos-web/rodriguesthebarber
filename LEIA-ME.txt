@@ -71,8 +71,9 @@ O mesmo vale para painel.css e painel.js em painel/index.html.
 FOTOS DO CAFÉ COM CANELA
 As fotos da seção do café são provisórias, do banco gratuito Pexels
 (licença livre para uso comercial, sem precisar dar crédito):
-  img/cafe-canela-*.webp   https://www.pexels.com/photo/11020620/
-  img/canela-paus-400.webp https://www.pexels.com/photo/1717771/
+  img/cafe-canela-*.webp   https://www.pexels.com/photo/1717771/ (a xícara)
+  img/canela-paus-400.webp https://www.pexels.com/photo/1717771/ (o pote de canela)
+A foto mostra café preto com canela, como o café servido na barbearia.
 Quando o Tiago tirar uma foto do café dele, basta trocar esses arquivos
 mantendo os mesmos nomes (foto quadrada, com a xícara no centro).
 
