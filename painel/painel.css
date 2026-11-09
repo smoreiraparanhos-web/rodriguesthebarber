@@ -13,7 +13,7 @@
   --ok: #7fd49a;
   --atencao: #f0c05a;
   --erro: #ff8a7a;
-  --serif: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --serif: "Bodoni Moda", Georgia, "Times New Roman", serif;
   --sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --raio: 10px;
   color-scheme: dark;

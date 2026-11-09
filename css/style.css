@@ -18,7 +18,7 @@
 
   --folha: linear-gradient(100deg, var(--ouro-escuro) 0%, var(--ouro) 22%, var(--ouro-claro) 38%, #fff4cf 45%, var(--ouro) 58%, var(--ouro-escuro) 100%);
 
-  --serif: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --serif: "Bodoni Moda", Georgia, "Times New Roman", serif;
   --sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
 
   --gutter: clamp(1rem, 4vw, 3rem);
