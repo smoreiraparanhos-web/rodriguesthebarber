@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Bodoni+Moda:ital,opsz,wght@0,6..96,500..800;1,6..96,500..700&family=Nothing+You+Could+Do&display=swap">
   <link rel="preload" as="image" href="img/tiago-retrato-900.webp" imagesrcset="img/tiago-retrato-480.webp 480w, img/tiago-retrato-900.webp 900w" imagesizes="(min-width: 900px) 34vw, 70vw">
   <!-- ?v=: aumente o número sempre que mudar o CSS ou o JS, para o navegador baixar a versão nova -->
-  <link rel="stylesheet" href="css/style.css?v=14">
+  <link rel="stylesheet" href="css/style.css?v=15">
   <script>document.documentElement.classList.add('js')</script>
   <script type="application/ld+json">
   {
@@ -192,6 +192,8 @@
         <p>Degradê, freestyle, platinado, barba e corte infantil. Cada foto é um cliente de verdade, do jeito que levantou da cadeira. Toque em uma foto para ampliar.</p>
       </div>
       <!-- fotos escritas aqui para o Google e outras ferramentas enxergarem; a lista em js/main.js precisa ter a mesma ordem -->
+      <!-- moldura clássica: grega dourada em volta da grade, cada foto com passe-partout de pedra -->
+      <div class="galeria-moldura">
       <ul class="galeria recolhida" id="galeria">
         <li>
           <button type="button" data-foto="corte-08" data-indice="0" data-legenda="Platinado com degradê nas laterais" aria-label="Ampliar foto: Platinado com degradê nas laterais">
@@ -254,6 +256,7 @@
           </button>
         </li>
       </ul>
+      </div>
       <button type="button" class="botao botao-linha galeria-toda" id="galeria-toda" aria-controls="galeria" aria-expanded="false">Ver todas as 12 fotos</button>
       <p class="galeria-mais"><a class="link-ouro" href="https://instagram.com/rodriguesthebarber4239" target="_blank" rel="noopener noreferrer">Veja mais cortes no Instagram @rodriguesthebarber4239</a></p>
     </section>
@@ -572,6 +575,6 @@
     <button type="button" class="seta seta-prox" aria-label="Próxima foto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
   </dialog>
 
-  <script src="js/main.js?v=14" type="module"></script>
+  <script src="js/main.js?v=15" type="module"></script>
 </body>
 </html>
