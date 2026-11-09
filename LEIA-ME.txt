@@ -68,14 +68,20 @@ um tempo. Sempre que mudar um desses arquivos, aumente o número ?v= nas
 linhas que carregam esses arquivos no index.html (ex.: ?v=8 vira ?v=9).
 O mesmo vale para painel.css e painel.js em painel/index.html.
 
-FOTOS DO CAFÉ COM CANELA
+FOTOS DO CAFÉ PRETO COM CANELA
 As fotos da seção do café são provisórias, do banco gratuito Pexels
 (licença livre para uso comercial, sem precisar dar crédito):
-  img/cafe-canela-*.webp   https://www.pexels.com/photo/1717771/ (a xícara)
-  img/canela-paus-400.webp https://www.pexels.com/photo/1717771/ (o pote de canela)
-A foto mostra café preto com canela, como o café servido na barbearia.
-Quando o Tiago tirar uma foto do café dele, basta trocar esses arquivos
+  img/cafe-canela-*.webp   https://www.pexels.com/photo/585754/ (xícara vista de cima)
+  img/cafe-graos-400.webp  https://www.pexels.com/photo/585754/ (grãos, da mesma foto)
+A canela aparece no visual (cor do título e detalhes), não na foto.
+Quando houver uma foto do café da casa, basta trocar esses arquivos
 mantendo os mesmos nomes (foto quadrada, com a xícara no centro).
+
+ORDEM DAS SEÇÕES
+Abertura > O jeito da casa > Café > Galeria > Avaliações > Preços >
+A cadeira espera por você > Agendar > Onde fica. Entre os grupos há
+faixas que deslizam ao rolar (classe "fita" no index.html), cada uma
+com os detalhes da seção seguinte.
 
 HORÁRIO DE FUNCIONAMENTO
 A placa "Aberto/Fechado", a régua do dia, a faixa da abertura, a tabela

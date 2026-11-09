@@ -156,6 +156,36 @@ if (matchMedia('(prefers-reduced-motion: no-preference)').matches) {
   }, { passive: true });
 }
 
+// fitas entre as seções: repete os itens até cobrir a tela e desliza ao rolar,
+// cada uma num sentido, como as películas da galeria
+const fitas = [...document.querySelectorAll('.fita')];
+for (const f of fitas) {
+  const itens = (f.dataset.itens || '').split('|').filter(Boolean);
+  if (!itens.length) continue;
+  const trilho = $('.fita-trilho', f);
+  const bloco = document.createDocumentFragment();
+  for (const t of itens) { const s = document.createElement('span'); s.textContent = t; bloco.append(s); }
+  do trilho.append(bloco.cloneNode(true)); while (trilho.scrollWidth < innerWidth * 3.2 && trilho.children.length < 400);
+}
+if (fitas.length && matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+  const vistas = new Set();
+  let pedidoFita = false;
+  const moverFitas = () => {
+    pedidoFita = false;
+    for (const f of vistas) {
+      const r = f.getBoundingClientRect();
+      const sentido = fitas.indexOf(f) % 2 ? 1 : -1;
+      f.style.setProperty('--x', `${((innerHeight - r.top) * .22 * sentido).toFixed(1)}px`);
+    }
+  };
+  const olho = new IntersectionObserver((es) => {
+    for (const e of es) e.isIntersecting ? vistas.add(e.target) : vistas.delete(e.target);
+    moverFitas();
+  });
+  fitas.forEach((f) => olho.observe(f));
+  addEventListener('scroll', () => { if (vistas.size && !pedidoFita) { pedidoFita = true; requestAnimationFrame(moverFitas); } }, { passive: true });
+}
+
 const dialogo = $('#foto-grande');
 const fotoGrande = $('img', dialogo);
 const legenda = $('.foto-legenda', dialogo);

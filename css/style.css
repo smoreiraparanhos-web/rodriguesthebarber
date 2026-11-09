@@ -905,7 +905,9 @@ section.hora-marcada { overflow-x: visible; }
   .carimbo { font-size: 1rem; right: 1rem; bottom: 1.1rem; }
 }
 
-/* ---------- café com canela ---------- */
+/* ---------- café preto com canela ---------- */
+
+.cafe { --canela: #c47a3a; --canela-claro: #e3a66b; --canela-folha: linear-gradient(100deg, #8a4a22 0%, #c47a3a 30%, #f0c08c 48%, #c47a3a 66%, #8a4a22 100%); }
 
 /* faixa escura de cantos arredondados, grãos de café bem apagados ao fundo
    e a foto num círculo com aro dourado, saindo pela borda direita */
@@ -919,17 +921,17 @@ section.hora-marcada { overflow-x: visible; }
   border-radius: 28px;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 50% 70% at 78% 50%, rgba(166, 92, 38, .3), transparent 70%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cg fill='none' stroke='%23c9a24a' stroke-opacity='.09' stroke-width='1.4'%3E%3Cg transform='translate(30 40) rotate(-30)'%3E%3Cellipse rx='9' ry='13'/%3E%3Cpath d='M0-12c-4 6 4 18 0 24'/%3E%3C/g%3E%3Cg transform='translate(130 30) rotate(25)'%3E%3Cellipse rx='7' ry='10'/%3E%3Cpath d='M0-9c-3 5 3 13 0 18'/%3E%3C/g%3E%3Cg transform='translate(95 120) rotate(60)'%3E%3Cellipse rx='9' ry='13'/%3E%3Cpath d='M0-12c-4 6 4 18 0 24'/%3E%3C/g%3E%3Cg transform='translate(20 150) rotate(10)'%3E%3Cellipse rx='6' ry='9'/%3E%3Cpath d='M0-8c-3 4 3 12 0 16'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") 0 0 / 180px 180px,
+    radial-gradient(ellipse 50% 70% at 78% 50%, rgba(196, 122, 58, .32), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cg fill='none' stroke='%23c47a3a' stroke-opacity='.14' stroke-width='1.4'%3E%3Cg transform='translate(30 40) rotate(-30)'%3E%3Cellipse rx='9' ry='13'/%3E%3Cpath d='M0-12c-4 6 4 18 0 24'/%3E%3C/g%3E%3Cg transform='translate(130 30) rotate(25)'%3E%3Cellipse rx='7' ry='10'/%3E%3Cpath d='M0-9c-3 5 3 13 0 18'/%3E%3C/g%3E%3Cg transform='translate(95 120) rotate(60)'%3E%3Cellipse rx='9' ry='13'/%3E%3Cpath d='M0-12c-4 6 4 18 0 24'/%3E%3C/g%3E%3Cg transform='translate(20 150) rotate(10)'%3E%3Cellipse rx='6' ry='9'/%3E%3Cpath d='M0-8c-3 4 3 12 0 16'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") 0 0 / 180px 180px,
     linear-gradient(120deg, #15100b, #0b0907 60%);
 }
 .cafe-texto { display: grid; gap: 1.1rem; padding: clamp(2rem, 5vw, 3.5rem); max-width: 34rem; }
 .cafe-selo {
   justify-self: start;
   padding: .25rem .8rem;
-  border: 1px solid var(--ouro);
+  border: 1px solid var(--canela);
   border-radius: 99px;
-  color: var(--ouro);
+  color: var(--canela-claro);
   font-size: .78rem;
   font-weight: 600;
   letter-spacing: .12em;
@@ -939,16 +941,17 @@ section.hora-marcada { overflow-x: visible; }
   font-family: var(--sans);
   font-weight: 800;
   font-variation-settings: "wdth" 115;
-  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  font-size: clamp(2rem, calc(3.4vw + 1rem), 3.3rem);
   line-height: .95;
   letter-spacing: -.01em;
   text-transform: uppercase;
 }
+.cafe-titulo span, .cafe-titulo em { white-space: nowrap; }
 .cafe-titulo span { display: block; color: var(--branco); }
 .cafe-titulo em {
   display: block;
   font-style: normal;
-  background: var(--folha);
+  background: var(--canela-folha);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -960,19 +963,19 @@ section.hora-marcada { overflow-x: visible; }
 .cafe-foto {
   position: absolute;
   top: 50%;
-  right: -8%;
-  width: min(440px, 115%);
+  right: 3%;
+  width: min(400px, 100%);
   aspect-ratio: 1;
   max-width: none;
   object-fit: cover;
   border-radius: 50%;
   transform: translateY(-50%);
-  box-shadow: 0 0 0 10px #0d0a07, 0 0 0 12px var(--ouro), 0 30px 60px -20px rgba(0, 0, 0, .8);
+  box-shadow: 0 0 0 3px var(--canela), 0 0 0 10px #0d0a07, 0 0 0 12px var(--ouro), 0 30px 60px -20px rgba(0, 0, 0, .8);
 }
 .cafe-detalhe {
   position: absolute;
-  left: 2%;
-  bottom: 8%;
+  left: -4%;
+  bottom: 6%;
   width: clamp(110px, 12vw, 150px);
   aspect-ratio: 1;
   object-fit: cover;
@@ -994,6 +997,101 @@ section.hora-marcada { overflow-x: visible; }
   .cafe-texto { padding-top: 1.8rem; }
   .js .cafe .cafe-foto { transform: translateX(50%) scale(.94); }
   .js .cafe.visivel .cafe-foto { transform: translateX(50%) scale(1); }
+}
+
+/* ---------- fitas entre as seções ----------
+   a mesma ideia das películas da galeria, com os detalhes de cada seção:
+   o poste da barbearia, grãos de café, estrelas do Google, o quadro de preços,
+   os horários da agenda e a faixa da estrada até a casa. Deslizam ao rolar. */
+
+.fita {
+  position: relative;
+  height: 46px;
+  overflow: hidden;
+  border-block: 1px solid rgba(201, 162, 74, .3);
+  background-color: #0b0907;
+}
+.fita-trilho {
+  position: absolute;
+  top: 50%;
+  left: -100vw;
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  white-space: nowrap;
+  transform: translate(var(--x, 0px), -50%);
+}
+.fita-trilho span {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.4rem;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-variation-settings: "wdth" 112;
+  font-size: .76rem;
+  letter-spacing: .28em;
+  color: rgba(214, 172, 82, .75);
+}
+.fita-trilho span::after { content: ""; display: inline-block; flex: none; }
+
+/* poste de barbearia deitado: listras em ouro, preto e branco */
+.fita-poste {
+  height: 16px;
+  border: 0;
+  background: repeating-linear-gradient(-45deg, var(--ouro) 0 9px, #000 9px 18px, var(--branco) 18px 27px, #000 27px 36px);
+  background-position-x: var(--x, 0px);
+  box-shadow: inset 0 3px 4px rgba(0, 0, 0, .55), inset 0 -3px 4px rgba(0, 0, 0, .55);
+}
+
+/* grãos de café sobre fundo de café expresso, letras cor de canela */
+.fita-cafe { background-color: #1a0e07; border-color: rgba(196, 122, 58, .45); }
+.fita-cafe .fita-trilho span { color: #d9a06a; }
+.fita-cafe .fita-trilho span::after {
+  width: 12px;
+  height: 16px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 16'%3E%3Cellipse cx='6' cy='8' rx='5' ry='7' fill='%236b3a1c' stroke='%23c47a3a' stroke-width='.8'/%3E%3Cpath d='M6 1.5c-2.5 3.5 2.5 9.5 0 13' fill='none' stroke='%23c47a3a' stroke-width='.9'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* estrelas do Google em ouro sobre preto */
+.fita-estrelas { background-color: #000; }
+.fita-estrelas .fita-trilho span { color: var(--ouro); letter-spacing: .22em; }
+.fita-estrelas .fita-trilho span::after { content: "✦"; color: rgba(201, 162, 74, .45); font-size: .7rem; }
+
+/* borda do quadro de preços: moldura dupla e letras de giz */
+.fita-quadro { background-color: #0f100e; border-block: 3px double rgba(201, 162, 74, .55); }
+.fita-quadro .fita-trilho span { color: rgba(245, 243, 238, .82); font-family: var(--serif); font-style: italic; font-weight: 600; letter-spacing: .14em; font-size: .9rem; }
+.fita-quadro .fita-trilho span::after {
+  width: 16px;
+  height: 16px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c9a24a' stroke-width='1.6'%3E%3Ccircle cx='6' cy='6' r='3'/%3E%3Ccircle cx='6' cy='18' r='3'/%3E%3Cpath d='M8.1 8.1 20 20M8.1 15.9 20 4'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* régua de horários da agenda, com tiques de relógio embaixo */
+.fita-relogio {
+  background:
+    repeating-linear-gradient(90deg, rgba(201, 162, 74, .4) 0 1px, transparent 1px 14px) left bottom / 100% 7px no-repeat,
+    #070605;
+}
+.fita-relogio .fita-trilho span { color: var(--ouro-claro); font-variant-numeric: tabular-nums; letter-spacing: .12em; font-size: .82rem; }
+.fita-relogio .fita-trilho span::after { content: "·"; color: rgba(201, 162, 74, .5); }
+
+/* asfalto com a faixa amarela do meio da estrada, a caminho da casa */
+.fita-estrada {
+  height: 30px;
+  background: linear-gradient(#1d1d1c, #121211);
+  border-color: rgba(255, 255, 255, .08);
+}
+.fita-estrada::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  background: repeating-linear-gradient(90deg, #d9ac44 0 30px, transparent 30px 54px);
+  background-position-x: var(--x, 0px);
+  opacity: .85;
 }
 
 /* ---------- preços ---------- */
