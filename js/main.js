@@ -405,6 +405,34 @@ const balancarPlaca = () => {
 placa.addEventListener('pointerenter', balancarPlaca);
 placa.addEventListener('click', balancarPlaca);
 
+/* ---------- agendamento recolhido ---------- */
+
+// a ficha de agendamento fica escondida e aparece quando a pessoa toca em qualquer botão de agendar
+const secaoAgendar = $('#agendar');
+function abrirAgendamento(rolar = true) {
+  const estavaFechada = secaoAgendar.hidden;
+  secaoAgendar.hidden = false;
+  if (estavaFechada) {
+    secaoAgendar.classList.remove('abrindo');
+    void secaoAgendar.offsetWidth;
+    secaoAgendar.classList.add('abrindo');
+    apontarParaMapa();
+  }
+  if (rolar) {
+    secaoAgendar.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    secaoAgendar.focus({ preventScroll: true });
+  }
+}
+if (location.hash === '#agendar') abrirAgendamento(false);
+else secaoAgendar.hidden = true;
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href="#agendar"]');
+  if (!link) return;
+  e.preventDefault();
+  abrirAgendamento();
+  history.replaceState(null, '', '#agendar');
+});
+
 /* ---------- barra fixa de agendamento no celular ---------- */
 
 const barra = $('#barra-agendar');

@@ -674,22 +674,31 @@ section.hora-marcada { overflow-x: visible; }
 .hm-sub { color: var(--cinza); font-size: 1.15rem; margin-bottom: .4rem; }
 .hm-texto-extra { color: #cfc8ba; max-width: 40ch; margin-top: -.6rem; }
 
-/* passos do atendimento em "O jeito da casa": números em ouro, como no quadro */
-.passos { list-style: none; counter-reset: passo; margin: .25rem 0 0; padding: 0; display: grid; gap: 1rem; max-width: 58ch; }
-.passos li { counter-increment: passo; position: relative; padding-left: 3rem; color: #cfc8ba; }
-.passos li::before {
-  content: counter(passo, decimal-leading-zero);
-  position: absolute;
-  left: 0;
-  top: -.15rem;
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 700;
-  font-size: 1.6rem;
-  line-height: 1;
+/* passos do atendimento em "O jeito da casa": ícone dourado, título em itálico e texto confortável */
+.passos { list-style: none; margin: .5rem 0 0; padding: 0; display: grid; gap: 1.4rem; max-width: 60ch; }
+.passos li { display: grid; grid-template-columns: 3.2rem 1fr; gap: 1rem; align-items: start; }
+.passo-icone {
+  display: grid;
+  place-items: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  border: 1px solid rgba(201, 162, 74, .7);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(214, 172, 82, .18), rgba(0, 0, 0, .6));
   color: var(--ouro-claro);
 }
-.passos b { display: block; color: var(--branco); font-weight: 700; margin-bottom: .15rem; }
+.passo-icone svg { width: 1.45rem; height: 1.45rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.passos h3 {
+  margin: .15rem 0 .35rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(1.25rem, 2.2vw, 1.45rem);
+  line-height: 1.2;
+  color: var(--ouro-claro);
+}
+.passos p { color: #ddd6c8; font-size: 1.08rem; line-height: 1.65; }
+.tiago-texto > p { font-size: 1.12rem; line-height: 1.7; color: #ddd6c8; }
 .hm-encaixe {
   color: var(--cinza);
   font-size: .92rem;
@@ -975,7 +984,7 @@ section.hora-marcada { overflow-x: visible; }
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.cafe-texto > p:last-child { color: #d8d0c2; font-size: 1.1rem; line-height: 1.6; }
+.cafe-texto > p:last-child { color: #ddd6c8; font-family: var(--serif); font-style: italic; font-size: 1.25rem; line-height: 1.6; }
 
 .cafe-fotos { position: relative; align-self: stretch; min-height: 360px; }
 .cafe-foto {
@@ -1016,6 +1025,14 @@ section.hora-marcada { overflow-x: visible; }
   .js .cafe .cafe-foto { transform: translateX(50%) scale(.94); }
   .js .cafe.visivel .cafe-foto { transform: translateX(50%) scale(1); }
 }
+
+/* agendamento recolhido: aparece quando a pessoa toca em um botão de agendar */
+.agendar[hidden] { display: none !important; }
+.agendar:focus { outline: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .agendar.abrindo { animation: abrir-agenda .7s var(--sair); }
+}
+@keyframes abrir-agenda { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 
 /* ---------- fitas entre as seções ----------
    a mesma ideia das películas da galeria, com os detalhes de cada seção:

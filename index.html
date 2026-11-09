@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Bodoni+Moda:ital,opsz,wght@0,6..96,500..800;1,6..96,500..700&family=Nothing+You+Could+Do&display=swap">
   <link rel="preload" as="image" href="img/tiago-retrato-900.webp" imagesrcset="img/tiago-retrato-480.webp 480w, img/tiago-retrato-900.webp 900w" imagesizes="(min-width: 900px) 34vw, 70vw">
   <!-- ?v=: aumente o número sempre que mudar o CSS ou o JS, para o navegador baixar a versão nova -->
-  <link rel="stylesheet" href="css/style.css?v=12">
+  <link rel="stylesheet" href="css/style.css?v=13">
   <script>document.documentElement.classList.add('js')</script>
   <script type="application/ld+json">
   {
@@ -103,7 +103,6 @@
           <span class="selo-num">20+</span>
           <span class="selo-txt">anos de<br>cadeira</span>
         </p>
-        <p class="assinatura">Rodrigues TheBarber</p>
       </div>
 
       <!-- faixa de informações rápidas no pé da abertura -->
@@ -128,11 +127,11 @@
       <div class="tiago-texto">
         <h2 id="tiago-titulo" class="titulo">O jeito da casa</h2>
         <p>São mais de vinte anos de profissão, do degradê clássico ao freestyle, da barba na toalha quente ao platinado. Aqui cada atendimento segue o mesmo cuidado, do primeiro cliente do dia ao último.</p>
-        <ol class="passos">
-          <li><b>A conversa vem antes da máquina.</b> A gente olha o formato do seu rosto, entende como você usa o cabelo no dia a dia e indica o corte que combina. O visagismo está incluso.</li>
-          <li><b>Você sabe o que vai ser feito.</b> Cada etapa é explicada antes de começar, para não ter surpresa na hora de olhar no espelho.</li>
-          <li><b>Só termina quando fica certo.</b> O acabamento é feito sem pressa, até o corte ficar do jeito que você imaginou. Prezamos pelo seu tempo e pela qualidade do resultado.</li>
-        </ol>
+        <ul class="passos">
+          <li><span class="passo-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18.5 5.4 15A7.5 7.5 0 1 1 9 18.3z"/><path d="M8.5 10.5h7M8.5 13.5h4.5"/></svg></span><div><h3>A conversa vem antes da máquina</h3><p>A gente olha o formato do seu rosto, entende como você usa o cabelo no dia a dia e indica o corte que combina. O visagismo está incluso.</p></div></li>
+          <li><span class="passo-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1 20 20M8.1 15.9 20 4"/></svg></span><div><h3>Você sabe o que vai ser feito</h3><p>Cada etapa é explicada antes de começar, para não ter surpresa na hora de olhar no espelho.</p></div></li>
+          <li><span class="passo-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="9" rx="6" ry="7"/><path d="M12 16v6M9 22h6"/><path d="m9.5 9 1.8 1.8L14.8 7.3"/></svg></span><div><h3>Só termina quando fica certo</h3><p>O acabamento é feito sem pressa, até o corte ficar do jeito que você imaginou. Prezamos pelo seu tempo e pela qualidade do resultado.</p></div></li>
+        </ul>
         <blockquote>
           <p>Pelos longos anos que conheço esse profissional, sempre se dedicou não só nessa profissão, mas sim em tudo que presenciei, sempre em busca de chegar à perfeição.</p>
           <footer>Anderson Dutra, cliente, no Google</footer>
@@ -145,15 +144,15 @@
       </div>
     </section>
 
-    <div class="fita fita-cafe" aria-hidden="true" data-itens="CAFÉ PRETO|COM CANELA"><div class="fita-trilho"></div></div>
+    <div class="fita fita-cafe" aria-hidden="true" data-itens="UM CAFÉ|ANTES DO CORTE"><div class="fita-trilho"></div></div>
 
-    <!-- Café preto com canela: faixa escura em ouro e canela, com a foto num círculo de aro dourado -->
+    <!-- Café da casa: faixa escura em ouro e canela, com a foto num círculo de aro dourado -->
     <section class="cafe" aria-labelledby="cafe-titulo">
       <div class="cafe-banner">
         <div class="cafe-texto">
           <p class="cafe-selo">Da casa</p>
-          <h2 id="cafe-titulo" class="cafe-titulo"><span>Café preto</span> <em>com canela</em></h2>
-          <p>Enquanto a cadeira te espera, aproveite o café da casa: quente, preto e com aquele toque de canela que é a cara da Rodrigues TheBarber.</p>
+          <h2 id="cafe-titulo" class="cafe-titulo"><span>Um café</span> <em>antes do corte</em></h2>
+          <p>Preto, quente e com uma pitada de canela. É assim que a gente recebe quem chega: sem pressa, com uma xícara na mão e conversa boa até a sua vez.</p>
         </div>
         <div class="cafe-fotos">
           <img class="cafe-foto" src="img/cafe-canela-900.webp" srcset="img/cafe-canela-480.webp 480w, img/cafe-canela-900.webp 900w" sizes="(min-width: 900px) 420px, 70vw" width="900" height="900" alt="Xícara de café preto vista de cima, rodeada de grãos de café" loading="lazy" decoding="async">
@@ -353,7 +352,7 @@
     </section>
 
     <!-- Agendamento ligado à agenda da barbearia -->
-    <section class="agendar" id="agendar" aria-labelledby="ag-titulo">
+    <section class="agendar" id="agendar" aria-labelledby="ag-titulo" tabindex="-1">
       <!-- relógio de parede de barbearia: marca a hora real e gira até o horário escolhido -->
       <svg class="relogio" id="relogio" viewBox="-100 -100 200 200" aria-hidden="true">
         <circle class="relogio-aro" r="97"/>
@@ -552,6 +551,6 @@
     <button type="button" class="seta seta-prox" aria-label="Próxima foto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
   </dialog>
 
-  <script src="js/main.js?v=12" type="module"></script>
+  <script src="js/main.js?v=13" type="module"></script>
 </body>
 </html>
