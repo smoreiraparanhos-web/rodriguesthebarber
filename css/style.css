@@ -2651,6 +2651,312 @@ p, li, dd, blockquote { text-wrap: pretty; }
 .depos-dica { display: none; }
 @media (max-width: 640px) { .depos-dica { display: flex; } }
 
+/* =====================================================================
+   Abertura e "O jeito da casa" no estilo das maquetes:
+   parede de pedra com feixe de luz, nicho em arco com o retrato,
+   placa de bronze, coluna com louro e moldura dourada de cantos recortados.
+   A foto do Tiago mantém as cores originais.
+   ===================================================================== */
+
+/* topo: R | RODRIGUES THE BARBER */
+.topo .marca { gap: 1rem; }
+.topo .marca-r {
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  padding-right: 1rem;
+  border-right: 1px solid rgba(201, 162, 74, .5);
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--creme);
+}
+.topo .marca-nome {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: .82rem;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--creme);
+}
+.topo .marca-nome em { font-family: var(--serif); font-weight: 500; font-size: 1em; font-variation-settings: normal; color: var(--creme); }
+.menu a { font-family: var(--serif); font-size: 1rem; }
+
+:root { --creme: #efe6d2; --pedra: #2a241e; --bronze: linear-gradient(180deg, #e4c48a 0%, #b58a4e 45%, #8a6534 55%, #c9a062 100%); }
+
+/* parede de pedra escura com um feixe de luz quente vindo do alto */
+.abertura > .abertura-luz {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='900' preserveAspectRatio='none'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0035 .006' numOctaves='5' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .17 0 0 0 0 .13 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat,
+    radial-gradient(ellipse 80% 70% at 40% 40%, #2b241d, #0d0b09 75%);
+}
+.abertura-luz::before {
+  background:
+    linear-gradient(118deg, transparent 18%, rgba(240, 200, 130, .16) 28%, rgba(240, 200, 130, .05) 40%, transparent 50%),
+    radial-gradient(ellipse 40% 50% at 30% 15%, rgba(240, 200, 130, .12), transparent 70%),
+    radial-gradient(ellipse 70% 70% at 30% 50%, rgba(0, 0, 0, .45), transparent 80%);
+}
+.fumaca { display: none; }
+section.abertura { overflow-x: visible; }
+
+/* letreiro: Rodrigues em creme, THE BARBER espaçado em ouro e um traço dourado */
+.abertura-local { font-family: var(--serif); font-size: .82rem; letter-spacing: .26em; text-transform: uppercase; color: var(--ouro); }
+.letreiro { margin-bottom: 1.6rem; }
+.letreiro-linha { background: none; -webkit-text-fill-color: currentColor; filter: none; }
+.letreiro-1 {
+  font-weight: 500;
+  color: var(--creme);
+  font-size: clamp(3.8rem, 10vw, 8.6rem);
+  text-shadow: 0 6px 30px rgba(0, 0, 0, .6);
+}
+.letreiro-2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-variation-settings: normal;
+  font-size: clamp(1.3rem, 3vw, 2.5rem);
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  color: var(--ouro);
+  margin: -.2em 0 0 .1em;
+}
+.letreiro::after { content: ""; display: block; width: 104px; height: 2px; margin-top: 1.6rem; background: var(--ouro); }
+.abertura-frase { color: var(--creme); font-weight: 500; font-size: clamp(1.6rem, 3vw, 2.3rem); }
+.abertura-sub { font-family: var(--serif); font-size: clamp(1.08rem, 1.6vw, 1.3rem); line-height: 1.5; color: #e2d9c6; }
+.abertura-acoes .botao { font-family: var(--serif); font-weight: 600; font-variation-settings: normal; font-size: 1.12rem; min-height: 56px; padding-inline: 1.8rem; border-radius: 2px; }
+.abertura-acoes .botao-ouro { background: var(--bronze); border-color: #d9b679; color: #1a1209; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 10px 24px -12px rgba(0, 0, 0, .8); }
+.abertura-acoes .botao-linha { border-color: rgba(201, 162, 74, .8); color: var(--creme); }
+.seta-cta { margin-left: .6rem; font-family: var(--sans); transition: transform .2s; }
+.botao:hover .seta-cta { transform: translateX(4px); }
+
+/* nicho de pedra em arco */
+.vitrine { width: min(100%, 470px); padding-left: 0; display: flex; align-items: flex-end; gap: 0; }
+.nicho {
+  position: relative;
+  flex: 1;
+  padding: 26px 26px 0;
+  border-radius: 999px 999px 0 0;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.08' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .44 0 0 0 0 .36 0 0 0 .35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E"),
+    linear-gradient(115deg, #6b5f50 0%, #4a4136 40%, #2e2820 100%);
+  box-shadow:
+    inset 3px 3px 0 rgba(255, 240, 210, .18), inset -4px -2px 0 rgba(0, 0, 0, .45),
+    0 30px 60px -20px rgba(0, 0, 0, .9);
+}
+.nicho::after {
+  /* parapeito de pedra embaixo do arco */
+  content: "";
+  position: absolute;
+  left: -18px;
+  right: -18px;
+  bottom: -18px;
+  height: 22px;
+  background: linear-gradient(180deg, #6e6252, #3a3229);
+  box-shadow: inset 0 2px 0 rgba(255, 240, 210, .2), 0 14px 24px -10px rgba(0, 0, 0, .9);
+}
+.nicho-chave {
+  /* pedra-chave no topo do arco */
+  position: absolute;
+  z-index: 2;
+  top: -8px;
+  left: 50%;
+  width: 54px;
+  height: 46px;
+  transform: translateX(-50%);
+  clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
+  background: linear-gradient(180deg, #7b6e5c, #4d4337);
+}
+.nicho .arco {
+  border: 0;
+  outline: 0;
+  border-radius: 999px 999px 0 0;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .6), inset 0 18px 40px rgba(0, 0, 0, .7);
+}
+.nicho .arco::after { background: linear-gradient(180deg, rgba(0, 0, 0, .35), transparent 22%); }
+.placa {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: -6px;
+  transform: translateX(-50%);
+  width: max-content;
+  padding: .55rem 1.6rem;
+  white-space: nowrap;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(.78rem, 1.5vw, 1rem);
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: #f4e6c4;
+  background: linear-gradient(180deg, #4a3a24, #241a0f);
+  border: 1px solid #b08a52;
+  outline: 1px solid rgba(176, 138, 82, .5);
+  outline-offset: 3px;
+  box-shadow: 0 8px 18px -6px rgba(0, 0, 0, .9);
+}
+.placa::before, .placa::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #c9a062;
+  transform: translateY(-50%);
+}
+.placa::before { left: .5rem; }
+.placa::after { right: .5rem; }
+
+/* coluna de pedra com louro em relevo */
+.coluna { display: flex; flex-direction: column; align-items: center; width: 74px; margin-left: 26px; align-self: stretch; justify-content: flex-end; margin-bottom: -18px; }
+.coluna-capitel { width: 74px; height: 26px; background: linear-gradient(180deg, #7a6d5b, #463d32); box-shadow: inset 0 2px 0 rgba(255, 240, 210, .2); }
+.coluna-fuste {
+  flex: 1;
+  width: 56px;
+  min-height: 200px;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, .35) 0 2px, rgba(255, 240, 210, .1) 2px 4px, transparent 4px 11px),
+    linear-gradient(90deg, #3a3229, #6a5e4e 45%, #3a3229);
+}
+.coluna-base { position: relative; width: 80px; height: 96px; background: linear-gradient(180deg, #5c5243, #2f2922); box-shadow: inset 0 2px 0 rgba(255, 240, 210, .15); display: grid; place-items: center; }
+.louro { width: 34px; height: 70px; fill: none; stroke: #b39a72; stroke-width: 1.6; stroke-linecap: round; }
+.louro .folhas path { fill: rgba(179, 154, 114, .35); }
+
+/* quem já viu a abertura com o poste e o selo redondo não vê sobras deles */
+.poste, .vitrine-selo, .feixes, .assinatura { display: none !important; }
+
+/* faixa do pé da abertura em serifa */
+.abertura-faixa { font-family: var(--serif); font-size: 1.05rem; }
+
+@media (max-width: 860px) {
+  .vitrine { width: min(84%, 340px); margin-top: 2.4rem; }
+  .coluna { display: none; }
+  .nicho { padding: 18px 18px 0; }
+}
+@media (max-width: 640px) {
+  .abertura-acoes { grid-template-columns: 1fr; }
+  .abertura-acoes .botao { width: 100%; }
+}
+
+/* ---------- O jeito da casa: centralizado, letras maiores, moldura dourada ---------- */
+.tiago {
+  min-height: 0;
+  padding-block: clamp(5rem, 9vw, 7.5rem);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .7 0 0 0 0 .6 0 0 0 0 .45 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 70% 60% at 50% 40%, #1a1610, #0a0907 80%);
+}
+.tiago::before {
+  /* moldura dupla dourada com cantos recortados */
+  content: "";
+  position: absolute;
+  inset: clamp(12px, 2.4vw, 28px);
+  z-index: -1;
+  border: 1px solid rgba(201, 162, 74, .55);
+  box-shadow: inset 0 0 0 6px transparent, inset 0 0 0 7px rgba(201, 162, 74, .22);
+  background: none;
+  -webkit-mask:
+    radial-gradient(circle at 0 0, transparent 22px, #000 22.5px) top left / 51% 51% no-repeat,
+    radial-gradient(circle at 100% 0, transparent 22px, #000 22.5px) top right / 51% 51% no-repeat,
+    radial-gradient(circle at 0 100%, transparent 22px, #000 22.5px) bottom left / 51% 51% no-repeat,
+    radial-gradient(circle at 100% 100%, transparent 22px, #000 22.5px) bottom right / 51% 51% no-repeat;
+  mask:
+    radial-gradient(circle at 0 0, transparent 22px, #000 22.5px) top left / 51% 51% no-repeat,
+    radial-gradient(circle at 100% 0, transparent 22px, #000 22.5px) top right / 51% 51% no-repeat,
+    radial-gradient(circle at 0 100%, transparent 22px, #000 22.5px) bottom left / 51% 51% no-repeat,
+    radial-gradient(circle at 100% 100%, transparent 22px, #000 22.5px) bottom right / 51% 51% no-repeat;
+}
+.tiago::after {
+  /* arcos dos cantos recortados */
+  content: "";
+  position: absolute;
+  inset: clamp(12px, 2.4vw, 28px);
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 0 0, transparent 21.5px, rgba(201, 162, 74, .55) 22px, transparent 23px) top left / 30px 30px no-repeat,
+    radial-gradient(circle at 100% 0, transparent 21.5px, rgba(201, 162, 74, .55) 22px, transparent 23px) top right / 30px 30px no-repeat,
+    radial-gradient(circle at 0 100%, transparent 21.5px, rgba(201, 162, 74, .55) 22px, transparent 23px) bottom left / 30px 30px no-repeat,
+    radial-gradient(circle at 100% 100%, transparent 21.5px, rgba(201, 162, 74, .55) 22px, transparent 23px) bottom right / 30px 30px no-repeat;
+}
+.tesoura-antiga {
+  position: absolute;
+  z-index: -1;
+  right: max(2%, calc((100vw - var(--largura)) / 2 - 40px));
+  top: 50%;
+  height: min(86%, 640px);
+  width: auto;
+  transform: translateY(-50%) rotate(14deg);
+  opacity: .55;
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, .8));
+  pointer-events: none;
+}
+.tiago-texto { justify-items: center; text-align: center; max-width: 760px; margin-inline: auto; gap: 1.6rem; }
+.tiago-texto > h2.titulo { font-size: clamp(2.8rem, 7vw, 5rem); font-weight: 500; color: var(--creme); }
+.tiago-texto > h2.titulo::after { left: 50%; width: 96px; transform: translateX(-50%) !important; }
+.tiago-texto > p { font-size: clamp(1.18rem, 1.8vw, 1.32rem); line-height: 1.7; max-width: 60ch; color: #e6ddcb; }
+
+.passos { justify-items: center; max-width: 640px; gap: 0; margin-top: .6rem; }
+.passos li { display: flex; flex-direction: column; align-items: center; gap: .9rem; padding-bottom: 2rem; position: relative; }
+.passos li + li { padding-top: 2rem; }
+.passos li + li::before {
+  /* linha dourada ligando um ícone ao outro */
+  content: "";
+  position: absolute;
+  top: -2rem;
+  left: 50%;
+  width: 1px;
+  height: 4rem;
+  background: linear-gradient(rgba(201, 162, 74, 0), rgba(201, 162, 74, .7), rgba(201, 162, 74, 0));
+}
+.passo-icone {
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 16px;
+  border: 1px solid #b08a52;
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, .03) 0 2px, transparent 2px 6px),
+    linear-gradient(145deg, #3d3020, #15100a);
+  box-shadow: inset 0 1px 0 rgba(255, 230, 180, .25), inset 0 -2px 6px rgba(0, 0, 0, .6), 0 12px 24px -12px rgba(0, 0, 0, .9);
+}
+.passo-icone svg { width: 1.9rem; height: 1.9rem; }
+.passos h3 { font-size: clamp(1.55rem, 3vw, 2.1rem); margin: 0; color: #e0b973; }
+.passos p { font-size: clamp(1.12rem, 1.7vw, 1.26rem); line-height: 1.65; max-width: 52ch; color: #e6ddcb; }
+
+/* citação numa placa de cantos recortados com aspas douradas */
+.tiago blockquote {
+  position: relative;
+  margin: 1rem 0 0;
+  padding: 2.2rem clamp(1.4rem, 4vw, 3rem) 1.8rem;
+  border: 1px solid rgba(201, 162, 74, .55);
+  border-left-width: 1px;
+  background: linear-gradient(180deg, rgba(40, 32, 20, .6), rgba(15, 12, 8, .6));
+  clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 16px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 16px 100%, 0 calc(100% - 16px), 0 16px);
+}
+.tiago blockquote::before {
+  content: "“";
+  display: block;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 4.2rem;
+  line-height: .6;
+  color: var(--ouro);
+  margin-bottom: .6rem;
+}
+.tiago blockquote p { font-size: clamp(1.3rem, 2.4vw, 1.6rem); line-height: 1.5; color: var(--creme); }
+.tiago blockquote footer { font-size: 1rem; margin-top: 1rem; }
+
+/* números separados por linhas */
+.numeros { justify-content: center; gap: 0; padding-top: 2rem; width: 100%; max-width: 640px; }
+.numeros div { flex: 1; align-items: center; padding-inline: 1rem; }
+.numeros div + div { border-left: 1px solid rgba(201, 162, 74, .4); }
+.numeros dd { font-size: clamp(2.6rem, 6vw, 3.8rem); background: var(--folha); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.numeros dt { font-size: 1.05rem; color: #e6ddcb; }
+
+@media (max-width: 760px) {
+  .tesoura-antiga { opacity: .16; right: -10%; }
+  .numeros div { padding-inline: .4rem; }
+}
+
 /* ---------- movimento reduzido ---------- */
 
 @media (prefers-reduced-motion: reduce) {

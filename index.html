@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Bodoni+Moda:ital,opsz,wght@0,6..96,500..800;1,6..96,500..700&family=Nothing+You+Could+Do&display=swap">
   <link rel="preload" as="image" href="img/tiago-retrato-900.webp" imagesrcset="img/tiago-retrato-480.webp 480w, img/tiago-retrato-900.webp 900w" imagesizes="(min-width: 900px) 34vw, 70vw">
   <!-- ?v=: aumente o número sempre que mudar o CSS ou o JS, para o navegador baixar a versão nova -->
-  <link rel="stylesheet" href="css/style.css?v=13">
+  <link rel="stylesheet" href="css/style.css?v=14">
   <script>document.documentElement.classList.add('js')</script>
   <script type="application/ld+json">
   {
@@ -59,7 +59,7 @@
   <header class="topo" id="topo">
     <a class="marca" href="#inicio" aria-label="Rodrigues TheBarber, voltar ao início">
       <span class="marca-r" aria-hidden="true">R</span>
-      <span class="marca-nome">Rodrigues <em>TheBarber</em></span>
+      <span class="marca-nome">Rodrigues <em>The Barber</em></span>
     </a>
     <nav class="menu" aria-label="Seções">
       <a href="#trabalhos">Trabalhos</a>
@@ -72,7 +72,7 @@
   </header>
 
   <main id="conteudo">
-    <!-- Abertura: letreiro em folha de ouro, poste giratório e a vitrine em arco,
+    <!-- Abertura: parede de pedra com feixe de luz, letreiro em creme e ouro e o retrato num nicho em arco,
          iluminados como o retrato da abertura: feixes violeta e fumaça -->
     <section class="abertura" id="inicio" aria-labelledby="titulo">
       <div class="abertura-luz" aria-hidden="true">
@@ -80,29 +80,29 @@
         <span class="fumaca fumaca-2"></span>
       </div>
       <div class="abertura-texto">
-        <p class="abertura-local">Eldorado do Sul &nbsp;✦&nbsp; <span class="junto">mais de 20 anos na tesoura</span></p>
+        <p class="abertura-local">Eldorado do Sul · <span class="junto">mais de 20 anos na tesoura</span></p>
         <h1 id="titulo" class="letreiro">
           <span class="letreiro-linha letreiro-1">Rodrigues</span>
-          <span class="letreiro-linha letreiro-2">TheBarber</span>
+          <span class="letreiro-linha letreiro-2">The Barber</span>
         </h1>
         <p class="abertura-frase">Aqui o casual vira chique.</p>
         <p class="abertura-sub">Degradê, barba na navalha, pigmentação e platinado, feitos com calma e capricho em cada detalhe.</p>
         <div class="abertura-acoes">
-          <a class="botao botao-ouro" href="#agendar">Agendar horário</a>
+          <a class="botao botao-ouro" href="#agendar">Agendar horário <span class="seta-cta" aria-hidden="true">→</span></a>
           <a class="botao botao-linha" href="#precos">Ver preços</a>
         </div>
       </div>
 
+      <!-- nicho de pedra em arco com o retrato, pedra-chave, placa de bronze e coluna com louro -->
       <div class="vitrine" aria-hidden="true">
-        <span class="feixes"><i></i><i></i><i></i></span>
-        <div class="poste"><span class="poste-listras"></span></div>
-        <figure class="arco">
-          <img src="img/tiago-retrato-900.webp" srcset="img/tiago-retrato-480.webp 480w, img/tiago-retrato-900.webp 900w" sizes="(min-width: 900px) 34vw, 70vw" width="900" height="1125" alt="" fetchpriority="high">
-        </figure>
-        <p class="vitrine-selo">
-          <span class="selo-num">20+</span>
-          <span class="selo-txt">anos de<br>cadeira</span>
-        </p>
+        <div class="nicho">
+          <span class="nicho-chave"></span>
+          <figure class="arco">
+            <img src="img/tiago-retrato-900.webp" srcset="img/tiago-retrato-480.webp 480w, img/tiago-retrato-900.webp 900w" sizes="(min-width: 900px) 34vw, 70vw" width="900" height="1125" alt="" fetchpriority="high">
+          </figure>
+          <p class="placa">20+ anos de ofício</p>
+        </div>
+        <div class="coluna"><span class="coluna-capitel"></span><span class="coluna-fuste"></span><span class="coluna-base"><svg class="louro" viewBox="0 0 60 120"><path d="M30 118C26 90 26 60 34 4"/><g class="folhas"><path d="M31 100c-10-2-16-10-16-16 8 1 14 7 16 16z"/><path d="M31 100c8-4 12-12 11-18-7 3-11 10-11 18z"/><path d="M30 80c-10-2-15-10-15-16 8 1 13 7 15 16z"/><path d="M30 80c8-4 12-12 11-18-7 3-11 10-11 18z"/><path d="M31 60c-9-2-14-9-14-15 7 1 12 7 14 15z"/><path d="M31 60c7-4 11-11 10-17-6 3-10 9-10 17z"/><path d="M32 40c-8-2-12-8-12-13 6 1 11 6 12 13z"/><path d="M32 40c6-3 10-9 9-15-6 3-9 8-9 15z"/><path d="M33 22c-6-2-9-6-9-10 5 1 8 5 9 10z"/><path d="M33 22c5-3 7-7 7-11-5 2-7 6-7 11z"/></g></svg></span></div>
       </div>
 
       <!-- faixa de informações rápidas no pé da abertura -->
@@ -123,7 +123,28 @@
 
     <!-- Sobre a casa (a marca fala no "nós"; o profissional não aparece pelo nome) -->
     <section class="tiago" aria-labelledby="tiago-titulo">
-      <img class="tiago-fundo" src="img/estampa-barbeiro.webp" width="1400" height="1380" alt="" loading="lazy" decoding="async">
+      <svg class="tesoura-antiga" viewBox="0 0 200 520" aria-hidden="true">
+        <defs>
+          <linearGradient id="bronze" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3e3020"/><stop offset=".35" stop-color="#a98450"/><stop offset=".55" stop-color="#ead09a"/><stop offset=".75" stop-color="#9c7744"/><stop offset="1" stop-color="#3a2c1c"/></linearGradient>
+          <linearGradient id="bronze-v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9b97f"/><stop offset=".5" stop-color="#8f6c3d"/><stop offset="1" stop-color="#4a3923"/></linearGradient>
+        </defs>
+        <path d="M94 306 L56 22 Q56 8 66 14 L114 296 Z" fill="url(#bronze)"/>
+        <path d="M61 24 L101 300" stroke="#f3dfb2" stroke-opacity=".45" stroke-width="1"/>
+        <path d="M106 306 L152 24 Q158 10 166 22 L122 300 Z" fill="url(#bronze)"/>
+        <path d="M157 28 L114 300" stroke="#f3dfb2" stroke-opacity=".35" stroke-width="1"/>
+        <g fill="none" stroke="url(#bronze-v)" stroke-linecap="round">
+          <path d="M98 312 C90 340 74 352 68 374" stroke-width="11"/>
+          <path d="M112 312 C122 340 138 352 146 374" stroke-width="11"/>
+          <ellipse cx="60" cy="424" rx="40" ry="50" stroke-width="12"/>
+          <ellipse cx="152" cy="422" rx="34" ry="44" stroke-width="12"/>
+        </g>
+        <g fill="none" stroke="#f3dfb2" stroke-opacity=".3" stroke-width="1.2">
+          <ellipse cx="60" cy="424" rx="34" ry="44"/>
+          <ellipse cx="152" cy="422" rx="28" ry="38"/>
+        </g>
+        <circle cx="104" cy="302" r="11" fill="url(#bronze-v)" stroke="#2a2014" stroke-width="1.5"/>
+        <path d="M97 298 L111 306" stroke="#2a2014" stroke-width="2"/>
+      </svg>
       <div class="tiago-texto">
         <h2 id="tiago-titulo" class="titulo">O jeito da casa</h2>
         <p>São mais de vinte anos de profissão, do degradê clássico ao freestyle, da barba na toalha quente ao platinado. Aqui cada atendimento segue o mesmo cuidado, do primeiro cliente do dia ao último.</p>
@@ -551,6 +572,6 @@
     <button type="button" class="seta seta-prox" aria-label="Próxima foto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
   </dialog>
 
-  <script src="js/main.js?v=13" type="module"></script>
+  <script src="js/main.js?v=14" type="module"></script>
 </body>
 </html>
